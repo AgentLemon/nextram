@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>NEXTRAM</title>
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css" />
+    <link href="application.css" rel="stylesheet" type="text/css" />
+    <script src="jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="underscore.min.js" type="text/javascript"></script>
+    <script src="fastclick.min.js" type="text/javascript"></script>
+    <script src="stops.js" type="text/javascript"></script>
+    <script src="consts.js" type="text/javascript"></script>
+    <script src="gateway.js" type="text/javascript"></script>
+    <script src="home.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="autoRotate:enabled" http-equiv="ScreenOrientation" />
+    <meta charset="UTF-8" />
+  </head>
+</html>
+<body>
+  <div class="page-wrap">
+    <div class="item search">
+      <input class="find-stop" placeholder="Остановка" type="text" /><span class="geolocator"><img src="geolocator.png" /></span>
+    </div>
+    <div class="item stop current-stop">
+      <div class="name"></div>
+      <div class="subname"></div>
+    </div>
+    <div class="item transport-top">
+      <button class="reload">Перезагрузить</button>
+    </div>
+    <div class="results"></div>
+  </div>
+</body>

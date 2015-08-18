@@ -1,0 +1,30 @@
+html
+  head
+    title NEXTRAM
+    link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'
+    link href="application.css" type="text/css" rel="stylesheet"
+    
+    script src="jquery-2.1.1.min.js" type="text/javascript"
+    script src="jquery.cookie.min.js" type="text/javascript"
+    script src="underscore.min.js" type="text/javascript"
+    script src="fastclick.min.js" type="text/javascript"
+    script src="stops.js" type="text/javascript"
+    script src="consts.js" type="text/javascript"
+    script src="gateway.js" type="text/javascript"
+    script src="home.js" type="text/javascript"
+    
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    meta http-equiv="ScreenOrientation" content="autoRotate:enabled"
+    meta charset="UTF-8"
+body
+  .page-wrap
+    .item.search
+      input.find-stop type="text" placeholder="Остановка"
+      span.geolocator
+        img src="geolocator.png"
+    .item.stop.current-stop
+      .name
+      .subname
+    .item.transport-top
+      button.reload Перезагрузить
+    .results

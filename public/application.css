@@ -1,0 +1,121 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'PT Sans', sans-serif; }
+
+.page-wrap {
+  padding: 0;
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto; }
+
+.find-stop {
+  width: 100%;
+  padding: 5px 40px 5px 10px;
+  font-size: 24px;
+  border: solid 1px #428fec;
+  border-radius: 0; }
+
+.geolocator {
+  position: relative;
+  height: 38px;
+  width: 38px;
+  top: -39px;
+  right: 1px;
+  float: right;
+  cursor: pointer;
+  display: none;
+  background-image: url("geolocator.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border: none;
+  background-color: #4098d3;
+  color: #fff;
+  background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 51%); }
+  .geolocator img {
+    width: 32px;
+    height: 32px;
+    margin: 3px; }
+
+.item {
+  padding: 10px 10px;
+  border-bottom: solid 1px #ddd; }
+  .item.transport-top {
+    display: none; }
+    .item.transport-top .reload {
+      width: 100%;
+      height: 50px;
+      font-size: 24px;
+      border-radius: 0;
+      background-color: #428fec;
+      color: white;
+      border: none;
+      cursor: pointer; }
+  .item.stop {
+    cursor: pointer; }
+    .item.stop.current-stop {
+      display: none; }
+    .item.stop .name {
+      font-size: 22px; }
+    .item.stop .subname {
+      color: #777;
+      font-size: 14px; }
+  .item.transport.bus {
+    color: #ffba00; }
+    .item.transport.bus .icon {
+      background-position-y: -9%; }
+  .item.transport.rail {
+    color: #d30000; }
+    .item.transport.rail .icon {
+      background-position-y: 94%; }
+  .item.transport.trol {
+    color: #0000ff; }
+    .item.transport.trol .icon {
+      background-position-y: 45%; }
+  .item.transport .est {
+    display: inline-block;
+    position: relative;
+    width: 35px;
+    float: left;
+    text-align: center;
+    margin-right: 10px;
+    padding-top: 40px; }
+    .item.transport .est .icon {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      left: 2px;
+      top: 3px;
+      overflow: hidden;
+      background-image: url("transport.png");
+      background-repeat: no-repeat;
+      background-size: 100%; }
+    .item.transport .est .est-time {
+      font-size: 24px; }
+  .item.transport div.route {
+    text-align: right;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: dashed 1px #ddd;
+    margin-left: 40px;
+    min-height: 40px; }
+    .item.transport div.route .number {
+      display: inline-block;
+      float: left;
+      font-size: 30px;
+      margin-right: 10px;
+      padding-top: 2px; }
+    .item.transport div.route span.route {
+      color: #777; }
+  .item.transport .spec {
+    margin-left: 40px;
+    text-align: right;
+    color: #777;
+    font-size: 12px; }
+  .item.transport .marker {
+    text-align: right;
+    color: #777;
+    font-size: 12px; }
+  .item.empty {
+    color: #777;
+    text-align: center; }
