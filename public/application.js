@@ -254,12 +254,13 @@ $(function() {
     return result;
   };
   if (navigator && navigator.geolocation) {
+    $geolocator.show().addClass("standby");
     navigator.geolocation.getCurrentPosition(function(p) {
       pos = {
         lat: p.coords.latitude,
         lon: p.coords.longitude
       };
-      return $geolocator.show();
+      return $geolocator.removeClass("standby");
     });
   }
   locationHash = getLocationHash();
@@ -270,13 +271,16 @@ $(function() {
     reset();
   }
   $search.on("keyup", _.debounce(loadStops, 250));
+  $search.on("focus", _.debounce(loadStops, 250));
   $(".reload").on("click", function() {
     setLoading();
     return reload();
   });
   $currentStop.on("click", reset);
   $geolocator.on("click", function() {
-    return findStops("");
+    if (pos) {
+      return findStops("");
+    }
   });
   return FastClick.attach(document.body);
 });

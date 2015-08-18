@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# 2015-08-18:v2
+
+CACHE:
+index.html
+application.css
+vendor.js
+application.js
+stops.js
+transport.png
+geolocator.png
+http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic
+
+NETWORK:
+*

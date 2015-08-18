@@ -142,9 +142,10 @@ $ ->
     result
 
   if navigator && navigator.geolocation
+    $geolocator.show().addClass("standby")
     navigator.geolocation.getCurrentPosition((p) ->
       pos = { lat: p.coords.latitude, lon: p.coords.longitude }
-      $geolocator.show()
+      $geolocator.removeClass("standby")
     )
 
   locationHash = getLocationHash()
@@ -155,12 +156,13 @@ $ ->
     reset()
 
   $search.on("keyup", _.debounce(loadStops, 250))
+  $search.on("focus", _.debounce(loadStops, 250))
   $(".reload").on("click", ->
     setLoading()
     reload()
   )
   $currentStop.on("click", reset)
 
-  $geolocator.on("click", -> findStops(""))
+  $geolocator.on("click", -> if pos then findStops(""))
 
   FastClick.attach(document.body)
