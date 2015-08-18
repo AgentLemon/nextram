@@ -13,7 +13,12 @@ var lr = require('tiny-lr'),
     server = lr();
 
 gulp.task('js', function() {
-  gulp.src('./assets/js/**/*.js')
+  gulp.src(['./assets/js/**/*.js', '!./assets/js/vendor/**/*.js'])
+    .pipe(gulp.dest('./public/'))
+    .pipe(livereload(server));
+
+  gulp.src('./assets/js/vendor/**/*.js')
+    .pipe(concat('vendor.js'))
     .pipe(gulp.dest('./public/'))
     .pipe(livereload(server));
 });
@@ -26,6 +31,7 @@ gulp.task('images', function() {
 gulp.task('coffee', function() {
   gulp.src('./assets/js/**/*.coffee')
     .pipe(coffee({bare: true}).on('error', gutil.log))
+    .pipe(concat('application.js'))
     .pipe(gulp.dest('./public/'))
 });
 
