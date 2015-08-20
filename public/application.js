@@ -17,7 +17,7 @@ window.Gateway = function() {
   parseStops = function(name) {
     var i, regexp, result, stop;
     result = [];
-    regexp = new RegExp(name, "i");
+    regexp = new RegExp("[^А-Яа-я0-9]" + name, "i");
     i = 0;
     while (i < stops.length) {
       stop = stops[i];
