@@ -270,8 +270,7 @@ $(function() {
   } else {
     reset();
   }
-  $search.on("keyup", _.debounce(loadStops, 250));
-  $search.on("focus", _.debounce(loadStops, 250));
+  $search.on("input paste focus", _.debounce(loadStops, 250));
   $(".reload").on("click", function() {
     setLoading();
     return reload();
