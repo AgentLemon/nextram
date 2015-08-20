@@ -14,9 +14,12 @@ html
 body
   .page-wrap
     .item.search
-      input.find-stop type="text" placeholder="Остановка"
-      span.geolocator
-        img src="geolocator.png"
+      .search-wrap
+        input.find-stop type="text" placeholder="Остановка"
+        .geolocator-wrap
+          span.geolocator
+            img src="geolocator.png"
+          | Ближайшие
     .item.stop.current-stop
       .name
       .subname

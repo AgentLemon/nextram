@@ -5,11 +5,13 @@ $ ->
   $results = $(".results")
   $transportTop = $(".transport-top")
   $currentStop = $(".current-stop")
+  $geowrap = $(".geolocator-wrap")
   $geolocator = $(".geolocator")
 
   gateway = new Gateway();
   lastStopId = null;
   state = "stops"
+  showGeo = $.parseJSON($.cookie("showGeo") || false);
   timer = null
   pos = null
 
@@ -117,14 +119,14 @@ $ ->
     clearInterval(timer)
     $results.empty()
     $search.closest(".item").show()
-    $search.val("")
-    $search.focus()
     $transportTop.hide()
     $currentStop.hide()
-    if pos
-      $geolocator.show();
     window.location.hash = ""
-    displayLastStops()
+    if pos
+      $geolocator.show()
+      setGeoState()
+    else
+      $search.focus()
 
   loadStops = ->
     value = $search.val()
@@ -141,11 +143,20 @@ $ ->
       result[param[1]] = decodeURIComponent(param[2]).replace(/\+/g, " ")
     result
 
+  setGeoState = ->
+    if showGeo
+      $geowrap.addClass("opened")
+      findStops("")
+    else
+      showGeo = false
+      $search.focus()
+
   if navigator && navigator.geolocation
-    $geolocator.show().addClass("standby")
+    $geowrap.show().addClass("standby")
     navigator.geolocation.getCurrentPosition((p) ->
       pos = { lat: p.coords.latitude, lon: p.coords.longitude }
-      $geolocator.removeClass("standby")
+      $geowrap.removeClass("standby")
+      setGeoState()
     )
 
   locationHash = getLocationHash()
@@ -162,6 +173,16 @@ $ ->
   )
   $currentStop.on("click", reset)
 
-  $geolocator.on("click", -> if pos then findStops(""))
+  $geolocator.on("click", ->
+    if pos
+      if showGeo
+        $geowrap.removeClass("opened")
+        $search.focus()
+      else
+        $geowrap.addClass("opened")
+        findStops("")
+      showGeo = !showGeo
+      $.cookie("showGeo", showGeo)
+  )
 
   FastClick.attach(document.body)

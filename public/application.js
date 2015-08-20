@@ -17,7 +17,7 @@ window.Gateway = function() {
   parseStops = function(name) {
     var i, regexp, result, stop;
     result = [];
-    regexp = new RegExp("[^А-Яа-я0-9]" + name, "i");
+    regexp = new RegExp("(^|[^А-Яа-я0-9])" + name, "i");
     i = 0;
     while (i < stops.length) {
       stop = stops[i];
@@ -72,16 +72,18 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $results, $search, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setLoading, state, stopsCount, timer;
+  var $currentStop, $geolocator, $geowrap, $results, $search, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopsCount, timer;
   stopsCount = 15;
   $search = $(".find-stop");
   $results = $(".results");
   $transportTop = $(".transport-top");
   $currentStop = $(".current-stop");
+  $geowrap = $(".geolocator-wrap");
   $geolocator = $(".geolocator");
   gateway = new Gateway();
   lastStopId = null;
   state = "stops";
+  showGeo = $.parseJSON($.cookie("showGeo") || false);
   timer = null;
   pos = null;
   setLoading = function() {
@@ -224,15 +226,15 @@ $(function() {
     clearInterval(timer);
     $results.empty();
     $search.closest(".item").show();
-    $search.val("");
-    $search.focus();
     $transportTop.hide();
     $currentStop.hide();
+    window.location.hash = "";
     if (pos) {
       $geolocator.show();
+      return setGeoState();
+    } else {
+      return $search.focus();
     }
-    window.location.hash = "";
-    return displayLastStops();
   };
   loadStops = function() {
     var value;
@@ -253,14 +255,24 @@ $(function() {
     }
     return result;
   };
+  setGeoState = function() {
+    if (showGeo) {
+      $geowrap.addClass("opened");
+      return findStops("");
+    } else {
+      showGeo = false;
+      return $search.focus();
+    }
+  };
   if (navigator && navigator.geolocation) {
-    $geolocator.show().addClass("standby");
+    $geowrap.show().addClass("standby");
     navigator.geolocation.getCurrentPosition(function(p) {
       pos = {
         lat: p.coords.latitude,
         lon: p.coords.longitude
       };
-      return $geolocator.removeClass("standby");
+      $geowrap.removeClass("standby");
+      return setGeoState();
     });
   }
   locationHash = getLocationHash();
@@ -278,7 +290,15 @@ $(function() {
   $currentStop.on("click", reset);
   $geolocator.on("click", function() {
     if (pos) {
-      return findStops("");
+      if (showGeo) {
+        $geowrap.removeClass("opened");
+        $search.focus();
+      } else {
+        $geowrap.addClass("opened");
+        findStops("");
+      }
+      showGeo = !showGeo;
+      return $.cookie("showGeo", showGeo);
     }
   });
   return FastClick.attach(document.body);
