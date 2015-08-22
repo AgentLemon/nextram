@@ -13,21 +13,79 @@
 </html>
 <body>
   <div class="page-wrap">
-    <div class="item search">
-      <div class="search-wrap">
-        <input class="find-stop" placeholder="Остановка" type="text" />
-        <div class="geolocator-wrap">
-          <span class="geolocator"><img src="geolocator.png" /></span>Ближайшие
+    <div class="card">
+      <div class="card-content">
+        <div class="content-wrap">
+          <input class="search" placeholder="Поиск" />
+        </div>
+        <div class="content-wrap with-top-border">
+          <div class="panel one-button">
+            <span class="button yellow">Показать ближайшие</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="item stop current-stop">
-      <div class="name"></div>
-      <div class="subname"></div>
+    <div class="card">
+      <div class="card-title blue">
+        ул. Пролетарская
+      </div>
+      <div class="card-content">
+        <div class="content-wrap">
+          <div class="stop-details">
+            <div class="details">
+              на ул. Киевской в сторону центра города (300 м)
+            </div>
+          </div>
+        </div>
+        <div class="content-wrap with-border">
+          <div class="panel">
+            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
+          </div>
+        </div>
+        <div class="content-wrap">
+          <div class="stop-details">
+            <div class="details">
+              на ул. Киевской в сторону а/с "Аврора" (200 м)
+            </div>
+          </div>
+        </div>
+        <div class="content-wrap with-border">
+          <div class="panel">
+            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="item transport-top">
-      <button class="reload">Перезагрузить</button>
+    <div class="card">
+      <div class="card-title blue">
+        ул. Киевская
+      </div>
+      <div class="card-content">
+        <div class="content-wrap">
+          <div class="stop-details">
+            <div class="details">
+              на Московском шоссе в сторону центра города (123 м)
+            </div>
+          </div>
+        </div>
+        <div class="content-wrap with-border">
+          <div class="panel">
+            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
+          </div>
+        </div>
+        <div class="content-wrap">
+          <div class="stop-details">
+            <div class="details">
+              на Московском шоссе в сторону прщспекта Масленникова (170 м)
+            </div>
+          </div>
+        </div>
+        <div class="content-wrap with-border">
+          <div class="panel">
+            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="results"></div>
   </div>
 </body>

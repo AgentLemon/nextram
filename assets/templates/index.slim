@@ -13,16 +13,48 @@ html
     meta charset="UTF-8"
 body
   .page-wrap
-    .item.search
-      .search-wrap
-        input.find-stop type="text" placeholder="Остановка"
-        .geolocator-wrap
-          span.geolocator
-            img src="geolocator.png"
-          | Ближайшие
-    .item.stop.current-stop
-      .name
-      .subname
-    .item.transport-top
-      button.reload Перезагрузить
-    .results
+    .card
+      .card-content
+        .content-wrap
+          input.search placeholder="Поиск"
+        .content-wrap.with-top-border
+          .panel.one-button
+            span.button.yellow Показать ближайшие
+
+    .card
+      .card-title.blue
+        | ул. Пролетарская
+      .card-content
+        .content-wrap
+          .stop-details
+            .details на ул. Киевской в сторону центра города (300 м)
+        .content-wrap.with-border
+          .panel
+            span.button.cyan Кратко
+            span.button.green Подробно
+        .content-wrap
+          .stop-details
+            .details на ул. Киевской в сторону а/с "Аврора" (200 м)
+        .content-wrap.with-border
+          .panel
+            span.button.cyan Кратко
+            span.button.green Подробно
+      
+    .card  
+      .card-title.blue
+        | ул. Киевская
+      .card-content
+        .content-wrap
+          .stop-details
+            .details на Московском шоссе в сторону центра города (123 м)
+        .content-wrap.with-border
+          .panel
+            span.button.cyan Кратко
+            span.button.green Подробно
+        .content-wrap
+          .stop-details
+            .details на Московском шоссе в сторону прщспекта Масленникова (170 м)
+        .content-wrap.with-border
+          .panel
+            span.button.cyan Кратко
+            span.button.green Подробно
