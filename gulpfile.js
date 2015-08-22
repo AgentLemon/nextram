@@ -43,7 +43,7 @@ gulp.task('sass', function () {
 
 gulp.task('slim', function(){
   gulp.src("./assets/templates/**/*.slim")
-    .pipe(slim({ pretty: true }))
+    .pipe(slim({ pretty: true, chdir: true, bundler: true }))
     .pipe(gulp.dest("./public/"));
 });
 
@@ -54,6 +54,11 @@ gulp.task('http-server', function() {
     .listen('9000');
 
   console.log('Server listening on http://localhost:9000');
+});
+
+gulp.task('build', function() {
+  gulp.src("./public/**/*")
+    .pipe(gulp.dest("./production/public/"))
 });
 
 gulp.task('watch', function() {
