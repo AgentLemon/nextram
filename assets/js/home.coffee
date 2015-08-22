@@ -1,7 +1,11 @@
 $ ->
+  stopCardTemplate = 
+  stopCardTemplate = _.template($("#stop-card-template").html())
+
   stopsCount = 15
 
-  $search = $(".find-stop")
+  $page = $(".page-wrap")
+  $search = $(".search")
   $results = $(".results")
   $transportTop = $(".transport-top")
   $currentStop = $(".current-stop")
@@ -66,21 +70,39 @@ $ ->
     stops = _.sortBy(stops, (s) -> if s.distance then s.distance else 100000)
     stops.slice(0, stopsCount)
 
+  groupStops = (stops) ->
+    groupedStops = _.groupBy(stops, "name")
+    result = []
+    _.each(groupedStops, (substops, key) ->
+      stop = { title: key }
+      stop["stops"] = _.map(substops, (i) ->
+        name = i.subname
+        if (i.distance)
+          name += " (#{i.distance}&nbsp;м)"
+        name: name, id: i.id
+      )
+      result.push(stop)
+    )
+    result
+
+
   displayStops = (stops) ->
     if state == "stops"
-      $results.empty()
-      _.each(stops, (stop) ->
-        $item = $('<div class="item stop"></div>')
-        $name = $('<div class="name"></div>').text(stop.name)
-        $subname = $('<div class="subname"></div>').text(stop.subname)
-        if stop.distance
-          $subname.append(" (" + stop.distance + "m)")
-        $item.append($name).append($subname)
-        $item.on("click", ->
-          openStop(stop.id, stop.name, stop.subname, true, stop.lat, stop.lon)
-          timer = setInterval(reload, 30000)
-        )
-        $results.append($item)
+      $(".stop-card").remove()
+      _.each(groupStops(stops), (stop) ->
+        $card = $(stopCardTemplate(stop))
+        $page.append($card)
+        # $item = $('<div class="item stop"></div>')
+        # $name = $('<div class="name"></div>').text(stop.name)
+        # $subname = $('<div class="subname"></div>').text(stop.subname)
+        # if stop.distance
+        #   $subname.append(" (" + stop.distance + "m)")
+        # $item.append($name).append($subname)
+        # $item.on("click", ->
+        #   openStop(stop.id, stop.name, stop.subname, true, stop.lat, stop.lon)
+        #   timer = setInterval(reload, 30000)
+        # )
+        # $results.append($item)
       )
 
   displayTransport = (transport) ->
@@ -152,10 +174,10 @@ $ ->
       $search.focus()
 
   if navigator && navigator.geolocation
-    $geowrap.show().addClass("standby")
+    $geolocator.addClass("disabled")
     navigator.geolocation.getCurrentPosition((p) ->
       pos = { lat: p.coords.latitude, lon: p.coords.longitude }
-      $geowrap.removeClass("standby")
+      $geolocator.removeClass("disabled")
       setGeoState()
     )
 

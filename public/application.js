@@ -72,9 +72,11 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $geowrap, $results, $search, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopsCount, timer;
+  var $currentStop, $geolocator, $geowrap, $page, $results, $search, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
+  stopCardTemplate = stopCardTemplate = _.template($("#stop-card-template").html());
   stopsCount = 15;
-  $search = $(".find-stop");
+  $page = $(".page-wrap");
+  $search = $(".search");
   $results = $(".results");
   $transportTop = $(".transport-top");
   $currentStop = $(".current-stop");
@@ -168,23 +170,37 @@ $(function() {
     });
     return stops.slice(0, stopsCount);
   };
+  groupStops = function(stops) {
+    var groupedStops, result;
+    groupedStops = _.groupBy(stops, "name");
+    result = [];
+    _.each(groupedStops, function(substops, key) {
+      var stop;
+      stop = {
+        title: key
+      };
+      stop["stops"] = _.map(substops, function(i) {
+        var name;
+        name = i.subname;
+        if (i.distance) {
+          name += " (" + i.distance + "&nbsp;м)";
+        }
+        return {
+          name: name,
+          id: i.id
+        };
+      });
+      return result.push(stop);
+    });
+    return result;
+  };
   displayStops = function(stops) {
     if (state === "stops") {
-      $results.empty();
-      return _.each(stops, function(stop) {
-        var $item, $name, $subname;
-        $item = $('<div class="item stop"></div>');
-        $name = $('<div class="name"></div>').text(stop.name);
-        $subname = $('<div class="subname"></div>').text(stop.subname);
-        if (stop.distance) {
-          $subname.append(" (" + stop.distance + "m)");
-        }
-        $item.append($name).append($subname);
-        $item.on("click", function() {
-          openStop(stop.id, stop.name, stop.subname, true, stop.lat, stop.lon);
-          return timer = setInterval(reload, 30000);
-        });
-        return $results.append($item);
+      $(".stop-card").remove();
+      return _.each(groupStops(stops), function(stop) {
+        var $card;
+        $card = $(stopCardTemplate(stop));
+        return $page.append($card);
       });
     }
   };
@@ -265,13 +281,13 @@ $(function() {
     }
   };
   if (navigator && navigator.geolocation) {
-    $geowrap.show().addClass("standby");
+    $geolocator.addClass("disabled");
     navigator.geolocation.getCurrentPosition(function(p) {
       pos = {
         lat: p.coords.latitude,
         lon: p.coords.longitude
       };
-      $geowrap.removeClass("standby");
+      $geolocator.removeClass("disabled");
       return setGeoState();
     });
   }

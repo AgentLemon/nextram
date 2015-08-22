@@ -19,7 +19,7 @@ body {
   width: 300px; }
 
 .card-title {
-  padding: 5px 10px;
+  padding: 5px 20px;
   color: white;
   font-size: 24px; }
 
@@ -64,13 +64,16 @@ body {
     box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
     border: solid 1px #ccc;
     cursor: pointer; }
+    .panel .button.disabled {
+      opacity: 0.5;
+      cursor: default; }
   .panel.one-button .button {
     width: 90%; }
 
 .search {
   width: 100%;
   height: 40px;
-  padding: 5px 45px 5px 10px;
+  padding: 5px 10px 5px 10px;
   font-size: 24px;
   border: none;
   border-radius: 0;
@@ -81,23 +84,33 @@ body {
   background-color: #5cb85c; }
   .green.button:hover {
     background-color: #4cae4c; }
+  .green.button.disabled:hover {
+    background-color: #5cb85c; }
 
 .yellow {
   background-color: #eea236; }
   .yellow.button:hover {
     background-color: #ec971f; }
+  .yellow.button.disabled:hover {
+    background-color: #eea236; }
 
 .red {
   background-color: #c9302c; }
   .red.button:hover {
     background-color: #ac2925; }
+  .red.button.disabled:hover {
+    background-color: #c9302c; }
 
 .blue {
   background-color: #2e6da4; }
   .blue.button:hover {
     background-color: #286090; }
+  .blue.button.disabled:hover {
+    background-color: #2e6da4; }
 
 .cyan {
   background-color: #46b8da; }
   .cyan.button:hover {
     background-color: #31b0d5; }
+  .cyan.button.disabled:hover {
+    background-color: #46b8da; }

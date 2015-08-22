@@ -19,42 +19,57 @@ body
           input.search placeholder="Поиск"
         .content-wrap.with-top-border
           .panel.one-button
-            span.button.yellow Показать ближайшие
+            span.button.yellow.geolocator.disabled Показать ближайшие
 
-    .card
-      .card-title.blue
-        | ул. Пролетарская
-      .card-content
-        .content-wrap
-          .stop-details
-            .details на ул. Киевской в сторону центра города (300 м)
-        .content-wrap.with-border
-          .panel
-            span.button.cyan Кратко
-            span.button.green Подробно
-        .content-wrap
-          .stop-details
-            .details на ул. Киевской в сторону а/с "Аврора" (200 м)
-        .content-wrap.with-border
-          .panel
-            span.button.cyan Кратко
-            span.button.green Подробно
+    / .card
+    /   .card-title.blue
+    /     | ул. Пролетарская
+    /   .card-content
+    /     .content-wrap
+    /       .stop-details
+    /         .details на ул. Киевской в сторону центра города (300 м)
+    /     .content-wrap.with-border
+    /       .panel
+    /         span.button.cyan Кратко
+    /         span.button.green Подробно
+    /     .content-wrap
+    /       .stop-details
+    /         .details на ул. Киевской в сторону а/с "Аврора" (200 м)
+    /     .content-wrap.with-border
+    /       .panel
+    /         span.button.cyan Кратко
+    /         span.button.green Подробно
       
-    .card  
-      .card-title.blue
-        | ул. Киевская
-      .card-content
-        .content-wrap
-          .stop-details
-            .details на Московском шоссе в сторону центра города (123 м)
-        .content-wrap.with-border
-          .panel
-            span.button.cyan Кратко
-            span.button.green Подробно
-        .content-wrap
-          .stop-details
-            .details на Московском шоссе в сторону прщспекта Масленникова (170 м)
-        .content-wrap.with-border
-          .panel
-            span.button.cyan Кратко
-            span.button.green Подробно
+    / .card  
+    /   .card-title.blue
+    /     | ул. Киевская
+    /   .card-content
+    /     .content-wrap
+    /       .stop-details
+    /         .details на Московском шоссе в сторону центра города (123 м)
+    /     .content-wrap.with-border
+    /       .panel
+    /         span.button.cyan Кратко
+    /         span.button.green Подробно
+    /     .content-wrap
+    /       .stop-details
+    /         .details на Московском шоссе в сторону прщспекта Масленникова (170 м)
+    /     .content-wrap.with-border
+    /       .panel
+    /         span.button.cyan Кратко
+    /         span.button.green Подробно
+
+script type="html/template" id="stop-card-template"
+  .card.stop-card  
+    .card-title.blue <%= title %>
+    .card-content
+      | <% _.each(stops, function(stop) { %>
+      .content-wrap
+        .stop-details
+          .details <%= stop.name %>
+      .content-wrap.with-border
+        .panel
+          | <span class="button cyan" data-stop-id="<%= stop.id %>">Кратко</span>
+          | <span class="button green" data-stop-id="<%= stop.id %>">Подробно</span>
+      | <% }) %>
+      

@@ -20,72 +20,33 @@
         </div>
         <div class="content-wrap with-top-border">
           <div class="panel one-button">
-            <span class="button yellow">Показать ближайшие</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title blue">
-        ул. Пролетарская
-      </div>
-      <div class="card-content">
-        <div class="content-wrap">
-          <div class="stop-details">
-            <div class="details">
-              на ул. Киевской в сторону центра города (300 м)
-            </div>
-          </div>
-        </div>
-        <div class="content-wrap with-border">
-          <div class="panel">
-            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
-          </div>
-        </div>
-        <div class="content-wrap">
-          <div class="stop-details">
-            <div class="details">
-              на ул. Киевской в сторону а/с "Аврора" (200 м)
-            </div>
-          </div>
-        </div>
-        <div class="content-wrap with-border">
-          <div class="panel">
-            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title blue">
-        ул. Киевская
-      </div>
-      <div class="card-content">
-        <div class="content-wrap">
-          <div class="stop-details">
-            <div class="details">
-              на Московском шоссе в сторону центра города (123 м)
-            </div>
-          </div>
-        </div>
-        <div class="content-wrap with-border">
-          <div class="panel">
-            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
-          </div>
-        </div>
-        <div class="content-wrap">
-          <div class="stop-details">
-            <div class="details">
-              на Московском шоссе в сторону прщспекта Масленникова (170 м)
-            </div>
-          </div>
-        </div>
-        <div class="content-wrap with-border">
-          <div class="panel">
-            <span class="button cyan">Кратко</span><span class="button green">Подробно</span>
+            <span class="button yellow geolocator disabled">Показать ближайшие</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </body>
+<script id="stop-card-template" type="html/template">
+  <div class="card stop-card">
+    <div class="card-title blue">
+      <%= title %>
+    </div>
+    <div class="card-content">
+      <% _.each(stops, function(stop) { %>
+      <div class="content-wrap">
+        <div class="stop-details">
+          <div class="details">
+            <%= stop.name %>
+          </div>
+        </div>
+      </div>
+      <div class="content-wrap with-border">
+        <div class="panel">
+          <span class="button cyan" data-stop-id="<%= stop.id %>">Кратко</span><span class="button green" data-stop-id="<%= stop.id %>">Подробно</span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</script>
