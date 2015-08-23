@@ -10,16 +10,18 @@ body {
 
 .page-wrap {
   padding: 0;
-  max-width: 320px;
-  width: 100%;
+  min-width: 300px;
+  max-width: 300px;
+  width: 80%;
   margin: 0 auto;
+  padding: 0 10px;
 }
 
 .card {
-  margin: 10px;
+  margin: 10px 0;
   border: solid 1px #ccc;
   box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
-  width: 300px;
+  width: 100%;
 }
 
 .card-title {
@@ -34,6 +36,16 @@ body {
 }
 
 .content-wrap {
+  transition: opacity 0.125s ease-in-out 0.125s, height 0.125s ease-in-out, padding 0.125s ease-in-out;
+
+  &.hidden {
+    transition: opacity 0.125s ease-in-out, height 0.125s ease-in-out 0.125s, padding 0.125s ease-in-out 0.125s !important;
+    height: 0 !important;
+    opacity: 0;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
   &.with-border {
     border-bottom: dashed 1px #aaa;
     padding-bottom: 10px;
@@ -44,9 +56,15 @@ body {
     }
   }
 
-  &.with-top-border {
-    border-top: dashed 1px #aaa;
-    padding-top: 10px;
+  &.searchbox {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 41px;
+  }
+
+  &.geobutton {
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 }
 
@@ -76,7 +94,7 @@ body {
     color: white;
     font-size: 20px;
     padding: 5px;
-    margin: 2%;
+    margin: 5px 2.5%;
     box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
     border: solid 1px #ccc;
     cursor: pointer;
@@ -102,7 +120,10 @@ body {
   border: none;
   border-radius: 0;
   background-color: #fafafa;
-  margin-bottom: 10px;
+}
+
+.geolocator {
+  margin-top: 10px;
 }
 
 .green {

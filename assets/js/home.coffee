@@ -6,11 +6,13 @@ $ ->
 
   $page = $(".page-wrap")
   $search = $(".search")
+  $searchbox = $(".searchbox")
+  $geolocator = $(".geolocator")
+  
   $results = $(".results")
+  $geowrap = $(".geowrap")
   $transportTop = $(".transport-top")
   $currentStop = $(".current-stop")
-  $geowrap = $(".geolocator-wrap")
-  $geolocator = $(".geolocator")
 
   gateway = new Gateway();
   lastStopId = null;
@@ -167,7 +169,7 @@ $ ->
 
   setGeoState = ->
     if showGeo
-      $geowrap.addClass("opened")
+      $searchbox.addClass("hidden")
       findStops("")
     else
       showGeo = false
@@ -199,9 +201,11 @@ $ ->
     if pos
       if showGeo
         $geowrap.removeClass("opened")
+        $searchbox.removeClass("hidden")
         $search.focus()
       else
         $geowrap.addClass("opened")
+        $searchbox.addClass("hidden")
         findStops("")
       showGeo = !showGeo
       $.cookie("showGeo", showGeo)

@@ -8,15 +8,17 @@ body {
 
 .page-wrap {
   padding: 0;
-  max-width: 320px;
-  width: 100%;
-  margin: 0 auto; }
+  min-width: 300px;
+  max-width: 300px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 0 10px; }
 
 .card {
-  margin: 10px;
+  margin: 10px 0;
   border: solid 1px #ccc;
   box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
-  width: 300px; }
+  width: 100%; }
 
 .card-title {
   padding: 5px 20px;
@@ -27,16 +29,27 @@ body {
   padding: 5px 10px;
   background-color: #fafafa; }
 
-.content-wrap.with-border {
-  border-bottom: dashed 1px #aaa;
-  padding-bottom: 10px; }
-  .content-wrap.with-border:last-child {
-    border: none;
+.content-wrap {
+  transition: opacity 0.125s ease-in-out 0.125s, height 0.125s ease-in-out, padding 0.125s ease-in-out; }
+  .content-wrap.hidden {
+    transition: opacity 0.125s ease-in-out, height 0.125s ease-in-out 0.125s, padding 0.125s ease-in-out 0.125s !important;
+    height: 0 !important;
+    opacity: 0;
+    padding: 0 !important;
+    overflow: hidden !important; }
+  .content-wrap.with-border {
+    border-bottom: dashed 1px #aaa;
+    padding-bottom: 10px; }
+    .content-wrap.with-border:last-child {
+      border: none;
+      padding-bottom: 5px; }
+  .content-wrap.searchbox {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 41px; }
+  .content-wrap.geobutton {
+    padding-top: 5px;
     padding-bottom: 5px; }
-
-.content-wrap.with-top-border {
-  border-top: dashed 1px #aaa;
-  padding-top: 10px; }
 
 .stop-details {
   display: table;
@@ -60,7 +73,7 @@ body {
     color: white;
     font-size: 20px;
     padding: 5px;
-    margin: 2%;
+    margin: 5px 2.5%;
     box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
     border: solid 1px #ccc;
     cursor: pointer; }
@@ -77,8 +90,10 @@ body {
   font-size: 24px;
   border: none;
   border-radius: 0;
-  background-color: #fafafa;
-  margin-bottom: 10px; }
+  background-color: #fafafa; }
+
+.geolocator {
+  margin-top: 10px; }
 
 .green {
   background-color: #5cb85c; }

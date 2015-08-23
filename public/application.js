@@ -72,16 +72,17 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $geowrap, $page, $results, $search, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
+  var $currentStop, $geolocator, $geowrap, $page, $results, $search, $searchbox, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
   stopCardTemplate = stopCardTemplate = _.template($("#stop-card-template").html());
   stopsCount = 15;
   $page = $(".page-wrap");
   $search = $(".search");
+  $searchbox = $(".searchbox");
+  $geolocator = $(".geolocator");
   $results = $(".results");
+  $geowrap = $(".geowrap");
   $transportTop = $(".transport-top");
   $currentStop = $(".current-stop");
-  $geowrap = $(".geolocator-wrap");
-  $geolocator = $(".geolocator");
   gateway = new Gateway();
   lastStopId = null;
   state = "stops";
@@ -273,7 +274,7 @@ $(function() {
   };
   setGeoState = function() {
     if (showGeo) {
-      $geowrap.addClass("opened");
+      $searchbox.addClass("hidden");
       return findStops("");
     } else {
       showGeo = false;
@@ -308,9 +309,11 @@ $(function() {
     if (pos) {
       if (showGeo) {
         $geowrap.removeClass("opened");
+        $searchbox.removeClass("hidden");
         $search.focus();
       } else {
         $geowrap.addClass("opened");
+        $searchbox.addClass("hidden");
         findStops("");
       }
       showGeo = !showGeo;
