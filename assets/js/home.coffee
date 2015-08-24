@@ -6,8 +6,9 @@ $ ->
 
   $page = $(".page-wrap")
   $search = $(".search")
-  $searchbox = $(".searchbox")
+  $searchCard = $(".search-card")
   $geolocator = $(".geolocator")
+  $noContent = $(".no-content")
   
   $results = $(".results")
   $geowrap = $(".geowrap")
@@ -50,6 +51,9 @@ $ ->
   reload = ->
     openStop(lastStopId) if lastStopId
 
+  clear = ->
+    $(".stop-card").remove()
+
   getDistance = (lat, lon) ->
     radlat1 = Math.PI * lat/180
     radlat2 = Math.PI * pos.lat/180
@@ -90,9 +94,12 @@ $ ->
 
   displayStops = (stops) ->
     if state == "stops"
-      $(".stop-card").remove()
-      _.each(groupStops(stops), (stop) ->
+      $noContent.addClass("hidden")
+      clear()
+      _.each(groupStops(stops), (stop, index) ->
         $card = $(stopCardTemplate(stop))
+        $card.addClass("hidden")
+        window.setTimeout((-> $card.removeClass("hidden")), index*200)
         $page.append($card)
         # $item = $('<div class="item stop"></div>')
         # $name = $('<div class="name"></div>').text(stop.name)
@@ -137,6 +144,9 @@ $ ->
     stopsCookie = $.cookie("lastStops")
     if stopsCookie
       displayStops(normalizeStops($.parseJSON(stopsCookie)))
+    else
+      clear()
+      $noContent.removeClass("hidden")
 
   reset = ->
     state = "stops"
@@ -169,7 +179,7 @@ $ ->
 
   setGeoState = ->
     if showGeo
-      $searchbox.addClass("hidden")
+      $searchCard.addClass("geolocated")
       findStops("")
     else
       showGeo = false
@@ -200,12 +210,10 @@ $ ->
   $geolocator.on("click", ->
     if pos
       if showGeo
-        $geowrap.removeClass("opened")
-        $searchbox.removeClass("hidden")
+        $searchCard.removeClass("geolocated")
         $search.focus()
       else
-        $geowrap.addClass("opened")
-        $searchbox.addClass("hidden")
+        $searchCard.addClass("geolocated")
         findStops("")
       showGeo = !showGeo
       $.cookie("showGeo", showGeo)

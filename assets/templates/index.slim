@@ -13,13 +13,18 @@ html
     meta charset="UTF-8"
 body
   .page-wrap
-    .card
+    .card.search-card
       .card-content
         .content-wrap.with-border.searchbox
           input.search placeholder="Поиск"
         .content-wrap.geobutton
-          .panel.one-button
-            span.button.yellow.geolocator.disabled Показать ближайшие
+          .panel.geobuttons
+            span.button.yellow.geolocator.on.disabled Показать ближайшие
+            span.button.cyan.geolocator.off.disabled Показать поиск
+
+    .card.no-content.hidden
+      .card-content
+        .content-wrap Пусто :-(
 
     / .card
     /   .card-title.blue

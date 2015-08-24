@@ -72,13 +72,14 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $geowrap, $page, $results, $search, $searchbox, $transportTop, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
+  var $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
   stopCardTemplate = stopCardTemplate = _.template($("#stop-card-template").html());
   stopsCount = 15;
   $page = $(".page-wrap");
   $search = $(".search");
-  $searchbox = $(".searchbox");
+  $searchCard = $(".search-card");
   $geolocator = $(".geolocator");
+  $noContent = $(".no-content");
   $results = $(".results");
   $geowrap = $(".geowrap");
   $transportTop = $(".transport-top");
@@ -141,6 +142,9 @@ $(function() {
       return openStop(lastStopId);
     }
   };
+  clear = function() {
+    return $(".stop-card").remove();
+  };
   getDistance = function(lat, lon) {
     var dist, radlat1, radlat2, radlon1, radlon2, radtheta, theta;
     radlat1 = Math.PI * lat / 180;
@@ -197,10 +201,15 @@ $(function() {
   };
   displayStops = function(stops) {
     if (state === "stops") {
-      $(".stop-card").remove();
-      return _.each(groupStops(stops), function(stop) {
+      $noContent.addClass("hidden");
+      clear();
+      return _.each(groupStops(stops), function(stop, index) {
         var $card;
         $card = $(stopCardTemplate(stop));
+        $card.addClass("hidden");
+        window.setTimeout((function() {
+          return $card.removeClass("hidden");
+        }), index * 200);
         return $page.append($card);
       });
     }
@@ -236,6 +245,9 @@ $(function() {
     stopsCookie = $.cookie("lastStops");
     if (stopsCookie) {
       return displayStops(normalizeStops($.parseJSON(stopsCookie)));
+    } else {
+      clear();
+      return $noContent.removeClass("hidden");
     }
   };
   reset = function() {
@@ -274,7 +286,7 @@ $(function() {
   };
   setGeoState = function() {
     if (showGeo) {
-      $searchbox.addClass("hidden");
+      $searchCard.addClass("geolocated");
       return findStops("");
     } else {
       showGeo = false;
@@ -308,12 +320,10 @@ $(function() {
   $geolocator.on("click", function() {
     if (pos) {
       if (showGeo) {
-        $geowrap.removeClass("opened");
-        $searchbox.removeClass("hidden");
+        $searchCard.removeClass("geolocated");
         $search.focus();
       } else {
-        $geowrap.addClass("opened");
-        $searchbox.addClass("hidden");
+        $searchCard.addClass("geolocated");
         findStops("");
       }
       showGeo = !showGeo;

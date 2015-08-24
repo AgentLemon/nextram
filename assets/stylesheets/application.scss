@@ -22,6 +22,32 @@ body {
   border: solid 1px #ccc;
   box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 1px;
   width: 100%;
+
+  &.no-content, &.stop-card {
+    transition: opacity 0.25s ease-in;
+    opacity: 1;
+
+    &.hidden {
+      transition: none;
+      opacity: 0;
+      height: 0;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      border: none;
+      margin: -5px;
+    }
+  }
+
+  &.no-content {
+    .content-wrap {
+      font-size: 22px;
+      color: #aaa;
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
 }
 
 .card-title {
@@ -36,10 +62,10 @@ body {
 }
 
 .content-wrap {
-  transition: opacity 0.125s ease-in-out 0.125s, height 0.125s ease-in-out, padding 0.125s ease-in-out;
+  transition: opacity 0.125s ease-in 0.125s, height 0.125s ease-in, padding 0.125s ease-in;
 
   &.hidden {
-    transition: opacity 0.125s ease-in-out, height 0.125s ease-in-out 0.125s, padding 0.125s ease-in-out 0.125s !important;
+    transition: opacity 0.125s ease-in, height 0.125s ease-in 0.125s, padding 0.125s ease-in 0.125s !important;
     height: 0 !important;
     opacity: 0;
     padding: 0 !important;
@@ -104,12 +130,6 @@ body {
       cursor: default;
     }
   }
-
-  &.one-button {
-    .button {
-      width: 90%;
-    }
-  }
 }
 
 .search {
@@ -124,6 +144,48 @@ body {
 
 .geolocator {
   margin-top: 10px;
+}
+
+.search-card {
+  overflow: hidden;
+
+  &.geolocated {
+    .searchbox {
+      transition: opacity 0.125s ease-in, height 0.125s ease-in 0.125s, padding 0.125s ease-in 0.125s !important;
+      padding: 0;
+      height: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .on {
+      left: -105% !important;
+    }
+
+    .off {
+      left: 1% !important;
+    }
+  }
+
+  .panel.geobuttons {
+    position: relative;
+    height: 48px;
+    
+    .button {
+      transition: left 0.125s ease-in 0.25s;
+      width: 90%;
+      position: absolute;
+      top: 0;
+
+      &.on {
+        left: 1%;
+      }
+
+      &.off {
+        left: 105%;
+      }
+    }
+  }
 }
 
 .green {

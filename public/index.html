@@ -13,15 +13,22 @@
 </html>
 <body>
   <div class="page-wrap">
-    <div class="card">
+    <div class="card search-card">
       <div class="card-content">
         <div class="content-wrap with-border searchbox">
           <input class="search" placeholder="Поиск" />
         </div>
         <div class="content-wrap geobutton">
-          <div class="panel one-button">
-            <span class="button yellow geolocator disabled">Показать ближайшие</span>
+          <div class="panel geobuttons">
+            <span class="button yellow geolocator on disabled">Показать ближайшие</span><span class="button cyan geolocator off disabled">Показать поиск</span>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="card no-content hidden">
+      <div class="card-content">
+        <div class="content-wrap">
+          Пусто :-(
         </div>
       </div>
     </div>
