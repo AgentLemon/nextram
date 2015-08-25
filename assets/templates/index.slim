@@ -26,44 +26,6 @@ body
       .card-content
         .content-wrap Пусто :-(
 
-    / .card
-    /   .card-title.blue
-    /     | ул. Пролетарская
-    /   .card-content
-    /     .content-wrap
-    /       .stop-details
-    /         .details на ул. Киевской в сторону центра города (300 м)
-    /     .content-wrap.with-border
-    /       .panel
-    /         span.button.cyan Кратко
-    /         span.button.green Подробно
-    /     .content-wrap
-    /       .stop-details
-    /         .details на ул. Киевской в сторону а/с "Аврора" (200 м)
-    /     .content-wrap.with-border
-    /       .panel
-    /         span.button.cyan Кратко
-    /         span.button.green Подробно
-      
-    / .card  
-    /   .card-title.blue
-    /     | ул. Киевская
-    /   .card-content
-    /     .content-wrap
-    /       .stop-details
-    /         .details на Московском шоссе в сторону центра города (123 м)
-    /     .content-wrap.with-border
-    /       .panel
-    /         span.button.cyan Кратко
-    /         span.button.green Подробно
-    /     .content-wrap
-    /       .stop-details
-    /         .details на Московском шоссе в сторону прщспекта Масленникова (170 м)
-    /     .content-wrap.with-border
-    /       .panel
-    /         span.button.cyan Кратко
-    /         span.button.green Подробно
-
 script type="html/template" id="stop-card-template"
   .card.stop-card  
     .card-title.blue <%= title %>
@@ -72,9 +34,44 @@ script type="html/template" id="stop-card-template"
       .content-wrap
         .stop-details
           .details <%= stop.name %>
+      .content-wrap.short-details.hidden
+        ul.transport
+          li.rail
+            .transport-title Трамвай
+            .transport-number 18
+            .transport-estimate 12 мин
+          li.bus
+            .transport-title Автобус
+            .transport-number 210
+            .transport-estimate 18 мин
+          li.troll
+            .transport-title Троллейбус
+            .transport-number 17
+            .transport-estimate 24 мин
+          li.troll
+            .transport-title Троллейбус
+            .transport-number 17
+            .transport-estimate 24 мин
+          li.rail 
+            .transport-title Трамвай
+            .transport-number 18
+            .transport-estimate 12 мин
+          li.bus
+            .transport-title Автобус
+            .transport-number 210
+            .transport-estimate 18 мин
+          li.troll
+            .transport-title Троллейбус
+            .transport-number 17
+            .transport-estimate 24 мин
+          li.troll
+            .transport-title Троллейбус
+            .transport-number 17
+            .transport-estimate 24 мин
       .content-wrap.with-border
         .panel
-          | <span class="button cyan" data-stop-id="<%= stop.id %>">Кратко</span>
+          | <span class="button cyan show-short" data-stop-id="<%= stop.id %>">Кратко</span>
           | <span class="button green" data-stop-id="<%= stop.id %>">Подробно</span>
       | <% }) %>
       
+

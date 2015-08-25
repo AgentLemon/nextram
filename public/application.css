@@ -136,6 +136,48 @@ body {
       .search-card .panel.geobuttons .button.off {
         left: 105%; }
 
+.short-details {
+  height: 90px;
+  padding: 5px 11px 10px 11px; }
+  .short-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%; }
+    .short-details ul li {
+      display: inline-block;
+      border: solid 1px #ddd;
+      text-align: center;
+      width: 59px; }
+      .short-details ul li.rail .transport-title {
+        background-color: #c9302c; }
+      .short-details ul li.rail .transport-number {
+        color: #c9302c; }
+      .short-details ul li.bus .transport-title {
+        background-color: #eea236; }
+      .short-details ul li.bus .transport-number {
+        color: #eea236; }
+      .short-details ul li.troll .transport-title {
+        background-color: #2e6da4; }
+      .short-details ul li.troll .transport-number {
+        color: #2e6da4; }
+      .short-details ul li .transport-title {
+        color: white;
+        padding: 1px 3px;
+        font-size: 10px; }
+      .short-details ul li .transport-number {
+        padding: 5px 0;
+        font-size: 30px;
+        font-weight: bold; }
+      .short-details ul li .transport-estimate {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0 5px;
+        border-top: solid 1px #ddd; }
+
 .green {
   background-color: #5cb85c; }
   .green.button:hover {

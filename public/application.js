@@ -207,6 +207,9 @@ $(function() {
         var $card;
         $card = $(stopCardTemplate(stop));
         $card.addClass("hidden");
+        $card.find(".show-short").on("click", function() {
+          return $(this).closest(".content-wrap").prev(".short-details").toggleClass("hidden");
+        });
         window.setTimeout((function() {
           return $card.removeClass("hidden");
         }), index * 200);

@@ -99,6 +99,9 @@ $ ->
       _.each(groupStops(stops), (stop, index) ->
         $card = $(stopCardTemplate(stop))
         $card.addClass("hidden")
+        $card.find(".show-short").on("click", ->
+          $(this).closest(".content-wrap").prev(".short-details").toggleClass("hidden")
+        )
         window.setTimeout((-> $card.removeClass("hidden")), index*200)
         $page.append($card)
         # $item = $('<div class="item stop"></div>')
