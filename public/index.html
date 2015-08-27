@@ -40,112 +40,32 @@
       <%= title %>
     </div>
     <div class="card-content">
-      <% _.each(stops, function(stop) { %>
-      <div class="content-wrap">
-        <div class="stop-details">
-          <div class="details">
-            <%= stop.name %>
-          </div>
+      <% _.each(stops, function(stop) { %><div class="content-wrap show-short" data-id="<%= stop.id %>">
+      <div class="stop-details">
+        <div class="details">
+          <%= stop.name %>
         </div>
+      </div>
+      <div class="stop-expand"></div>
       </div>
       <div class="content-wrap short-details hidden">
-        <ul class="transport">
-          <li class="rail">
-            <div class="transport-title">
-              Трамвай
-            </div>
-            <div class="transport-number">
-              18
-            </div>
-            <div class="transport-estimate">
-              12 мин
-            </div>
-          </li>
-          <li class="bus">
-            <div class="transport-title">
-              Автобус
-            </div>
-            <div class="transport-number">
-              210
-            </div>
-            <div class="transport-estimate">
-              18 мин
-            </div>
-          </li>
-          <li class="troll">
-            <div class="transport-title">
-              Троллейбус
-            </div>
-            <div class="transport-number">
-              17
-            </div>
-            <div class="transport-estimate">
-              24 мин
-            </div>
-          </li>
-          <li class="troll">
-            <div class="transport-title">
-              Троллейбус
-            </div>
-            <div class="transport-number">
-              17
-            </div>
-            <div class="transport-estimate">
-              24 мин
-            </div>
-          </li>
-          <li class="rail">
-            <div class="transport-title">
-              Трамвай
-            </div>
-            <div class="transport-number">
-              18
-            </div>
-            <div class="transport-estimate">
-              12 мин
-            </div>
-          </li>
-          <li class="bus">
-            <div class="transport-title">
-              Автобус
-            </div>
-            <div class="transport-number">
-              210
-            </div>
-            <div class="transport-estimate">
-              18 мин
-            </div>
-          </li>
-          <li class="troll">
-            <div class="transport-title">
-              Троллейбус
-            </div>
-            <div class="transport-number">
-              17
-            </div>
-            <div class="transport-estimate">
-              24 мин
-            </div>
-          </li>
-          <li class="troll">
-            <div class="transport-title">
-              Троллейбус
-            </div>
-            <div class="transport-number">
-              17
-            </div>
-            <div class="transport-estimate">
-              24 мин
-            </div>
-          </li>
-        </ul>
+        <ul class="transport"></ul>
       </div>
-      <div class="content-wrap with-border">
-        <div class="panel">
-          <span class="button cyan show-short" data-stop-id="<%= stop.id %>">Кратко</span><span class="button green" data-stop-id="<%= stop.id %>">Подробно</span>
-        </div>
-      </div>
+      <div class="content-wrap with-border"></div>
       <% }) %>
     </div>
   </div>
+</script>
+<script id="transport-short-card-template" type="html/template">
+  <li class="<%= type %>">
+  <div class="transport-title">
+    <%= humanType %>
+  </div>
+  <div class="transport-number">
+    <%= number %>
+  </div>
+  <div class="transport-estimate">
+    <%= est %> мин
+  </div>
+  </li>
 </script>

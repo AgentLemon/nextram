@@ -27,51 +27,23 @@ body
         .content-wrap Пусто :-(
 
 script type="html/template" id="stop-card-template"
-  .card.stop-card  
+  .card.stop-card
     .card-title.blue <%= title %>
     .card-content
       | <% _.each(stops, function(stop) { %>
-      .content-wrap
-        .stop-details
-          .details <%= stop.name %>
+      | <div class="content-wrap show-short" data-id="<%= stop.id %>">
+      .stop-details
+        .details <%= stop.name %>
+      .stop-expand
+      | </div>
       .content-wrap.short-details.hidden
         ul.transport
-          li.rail
-            .transport-title Трамвай
-            .transport-number 18
-            .transport-estimate 12 мин
-          li.bus
-            .transport-title Автобус
-            .transport-number 210
-            .transport-estimate 18 мин
-          li.troll
-            .transport-title Троллейбус
-            .transport-number 17
-            .transport-estimate 24 мин
-          li.troll
-            .transport-title Троллейбус
-            .transport-number 17
-            .transport-estimate 24 мин
-          li.rail 
-            .transport-title Трамвай
-            .transport-number 18
-            .transport-estimate 12 мин
-          li.bus
-            .transport-title Автобус
-            .transport-number 210
-            .transport-estimate 18 мин
-          li.troll
-            .transport-title Троллейбус
-            .transport-number 17
-            .transport-estimate 24 мин
-          li.troll
-            .transport-title Троллейбус
-            .transport-number 17
-            .transport-estimate 24 мин
       .content-wrap.with-border
-        .panel
-          | <span class="button cyan show-short" data-stop-id="<%= stop.id %>">Кратко</span>
-          | <span class="button green" data-stop-id="<%= stop.id %>">Подробно</span>
       | <% }) %>
-      
 
+script type="html/template" id="transport-short-card-template"
+  | <li class="<%= type %>">
+  .transport-title <%= humanType %>
+  .transport-number <%= number %>
+  .transport-estimate <%= est %> мин
+  | </li>

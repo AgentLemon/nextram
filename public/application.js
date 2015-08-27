@@ -1,10 +1,15 @@
 window.Gateway = function() {
-  var fixLayout, layout, normalize, parseStops, parseTransport, self, stopsUrl, transportRegexp, transportUrl;
+  var fixLayout, humanTypes, layout, normalize, parseStops, parseTransport, self, stopsUrl, transportRegexp, transportUrl;
   self = this;
   stopsUrl = "http://tosamara.ru/poisk/stops.php";
   transportUrl = "http://tosamara.ru/xml_bridge.php";
   transportRegexp = /(<li class="trans-ico-([^"]+)".*class="trans-min-count">([^<]*).*class="trans-name">([^:]+):([^<]*).*class="trans-detail">([^<]*).*class="trans-detail">([^<]*))/gim;
   layout = [[/q/g, "й"], [/w/g, "ц"], [/e/g, "у"], [/r/g, "к"], [/t/g, "е"], [/y/g, "н"], [/u/g, "г"], [/i/g, "ш"], [/o/g, "щ"], [/p/g, "з"], [/\[|\{/g, "х"], [/\]|\}/g, "ъ"], [/a/g, "ф"], [/s/g, "ы"], [/d/g, "в"], [/f/g, "а"], [/g/g, "п"], [/h/g, "р"], [/j/g, "о"], [/k/g, "л"], [/l/g, "д"], [/;|:/g, "ж"], [/'|"/g, "э"], [/z/g, "я"], [/x/g, "ч"], [/c/g, "с"], [/v/g, "м"], [/b/g, "и"], [/n/g, "т"], [/m/g, "ь"], [/,|</g, "б"], [/\.|>/g, "ю"], [/`|~/g, "ё"]];
+  humanTypes = {
+    rail: "Трамвай",
+    bus: "Автобус",
+    troll: "Троллейбус"
+  };
   normalize = function(str) {
     return str.replace(/\t|\r|\n/g, "").replace(/&nbsp;/g, " ");
   };
@@ -48,9 +53,10 @@ window.Gateway = function() {
         type: stop[2],
         est: stop[3],
         number: stop[4],
-        route: stop[5].replace("→", "→<br/>"),
+        route: stop[5],
         spec: stop[6],
-        marker: stop[7]
+        marker: stop[7],
+        humanType: humanTypes[stop[2]]
       };
     });
     return transport;
@@ -72,8 +78,9 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, state, stopCardTemplate, stopsCount, timer;
-  stopCardTemplate = stopCardTemplate = _.template($("#stop-card-template").html());
+  var $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportShortCardTemplate;
+  stopCardTemplate = _.template($("#stop-card-template").html());
+  transportShortCardTemplate = _.template($("#transport-short-card-template").html());
   stopsCount = 15;
   $page = $(".page-wrap");
   $search = $(".search");
@@ -199,6 +206,26 @@ $(function() {
     });
     return result;
   };
+  showTransportShort = function() {
+    var $details, $this, $transport, stopId;
+    $this = $(this);
+    $details = $this.next(".short-details");
+    $transport = $details.find("ul.transport");
+    stopId = $this.closest(".content-wrap").data("id");
+    $details.toggleClass("hidden");
+    $this.toggleClass("expanded");
+    if ($this.is(".expanded")) {
+      $transport.empty();
+      console.log("stopId: " + stopId);
+      return gateway.loadTransport(stopId, function(transport) {
+        return _.each(transport, function(item) {
+          var $card;
+          $card = transportShortCardTemplate(item);
+          return $transport.append($card);
+        });
+      });
+    }
+  };
   displayStops = function(stops) {
     if (state === "stops") {
       $noContent.addClass("hidden");
@@ -207,9 +234,7 @@ $(function() {
         var $card;
         $card = $(stopCardTemplate(stop));
         $card.addClass("hidden");
-        $card.find(".show-short").on("click", function() {
-          return $(this).closest(".content-wrap").prev(".short-details").toggleClass("hidden");
-        });
+        $card.find(".show-short").on("click", showTransportShort);
         window.setTimeout((function() {
           return $card.removeClass("hidden");
         }), index * 200);

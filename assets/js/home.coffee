@@ -1,6 +1,6 @@
-$ ->
-  stopCardTemplate = 
+$ -> 
   stopCardTemplate = _.template($("#stop-card-template").html())
+  transportShortCardTemplate = _.template($("#transport-short-card-template").html())
 
   stopsCount = 15
 
@@ -92,6 +92,25 @@ $ ->
     result
 
 
+  showTransportShort = ->
+    $this = $(this)
+    $details = $this.next(".short-details")
+    $transport = $details.find("ul.transport")
+    stopId = $this.closest(".content-wrap").data("id")
+
+    $details.toggleClass("hidden")
+    $this.toggleClass("expanded")
+
+    if ($this.is(".expanded"))
+      $transport.empty()
+      console.log("stopId: #{stopId}")
+      gateway.loadTransport(stopId, (transport) ->
+        _.each(transport, (item) -> 
+          $card = transportShortCardTemplate(item)
+          $transport.append($card)
+        )
+      )
+
   displayStops = (stops) ->
     if state == "stops"
       $noContent.addClass("hidden")
@@ -99,22 +118,9 @@ $ ->
       _.each(groupStops(stops), (stop, index) ->
         $card = $(stopCardTemplate(stop))
         $card.addClass("hidden")
-        $card.find(".show-short").on("click", ->
-          $(this).closest(".content-wrap").prev(".short-details").toggleClass("hidden")
-        )
+        $card.find(".show-short").on("click", showTransportShort)
         window.setTimeout((-> $card.removeClass("hidden")), index*200)
         $page.append($card)
-        # $item = $('<div class="item stop"></div>')
-        # $name = $('<div class="name"></div>').text(stop.name)
-        # $subname = $('<div class="subname"></div>').text(stop.subname)
-        # if stop.distance
-        #   $subname.append(" (" + stop.distance + "m)")
-        # $item.append($name).append($subname)
-        # $item.on("click", ->
-        #   openStop(stop.id, stop.name, stop.subname, true, stop.lat, stop.lon)
-        #   timer = setInterval(reload, 30000)
-        # )
-        # $results.append($item)
       )
 
   displayTransport = (transport) ->

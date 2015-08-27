@@ -100,6 +100,7 @@ body {
   min-height: 30px;
   color: #333;
   font-size: 20px;
+  cursor: pointer;
 
   .details {
     display: table-cell;
@@ -107,6 +108,22 @@ body {
     padding: 5px 10px;
     color: #333;
     font-size: 20px;
+  }
+}
+
+.stop-expand {
+  text-align: center;
+  cursor: pointer;
+  background-image: url(angle-down.png);
+  background-repeat: no-repeat;
+  height: 10px;
+  background-size: 16px;
+  background-position-x: 50%;
+}
+
+.expanded {
+  .stop-expand {
+    background-image: url(angle-up.png);
   }
 }
 
@@ -197,7 +214,7 @@ body {
     padding: 0;
     margin: 0;
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
 

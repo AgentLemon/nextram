@@ -8,6 +8,7 @@ window.Gateway = ->
     [/a/g, "ф"], [/s/g, "ы"], [/d/g, "в"], [/f/g, "а"], [/g/g, "п"], [/h/g, "р"], [/j/g, "о"], [/k/g, "л"], [/l/g, "д"], [/;|:/g, "ж"], [/'|"/g, "э"],
     [/z/g, "я"], [/x/g, "ч"], [/c/g, "с"], [/v/g, "м"], [/b/g, "и"], [/n/g, "т"], [/m/g, "ь"], [/,|</g, "б"], [/\.|>/g, "ю"], [/`|~/g, "ё"]
   ]
+  humanTypes = { rail: "Трамвай", bus: "Автобус", troll: "Троллейбус" }
 
   normalize = (str) ->
     str.replace(/\t|\r|\n/g, "").replace(/&nbsp;/g, " ")
@@ -47,9 +48,10 @@ window.Gateway = ->
       type: stop[2]
       est: stop[3]
       number: stop[4]
-      route: stop[5].replace("→", "→<br/>")
+      route: stop[5]
       spec: stop[6]
-      marker: stop[7]
+      marker: stop[7],
+      humanType: humanTypes[stop[2]]
     )
     transport
 
