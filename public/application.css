@@ -151,7 +151,31 @@ body {
 
 .short-details {
   height: 90px;
-  padding: 5px 11px 10px 11px; }
+  padding: 5px 11px 10px 11px;
+  position: relative; }
+  .short-details.loading ul {
+    opacity: 0; }
+  .short-details.loading .overlay.loading {
+    display: block; }
+  .short-details.empty .overlay.empty {
+    display: block; }
+  .short-details .overlay {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0; }
+    .short-details .overlay.loading {
+      background-image: url(loading.gif);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: 15%; }
+    .short-details .overlay.empty {
+      color: #aaa;
+      font-size: 30px;
+      text-align: center;
+      padding-top: 35px; }
   .short-details ul {
     list-style: none;
     padding: 0;
@@ -159,7 +183,8 @@ body {
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    width: 100%; }
+    width: 100%;
+    transition: opacity 0.125s ease-in; }
     .short-details ul li {
       display: inline-block;
       border: solid 1px #ddd;
@@ -173,9 +198,9 @@ body {
         background-color: #eea236; }
       .short-details ul li.bus .transport-number {
         color: #eea236; }
-      .short-details ul li.troll .transport-title {
+      .short-details ul li.trol .transport-title {
         background-color: #2e6da4; }
-      .short-details ul li.troll .transport-number {
+      .short-details ul li.trol .transport-number {
         color: #2e6da4; }
       .short-details ul li .transport-title {
         color: white;

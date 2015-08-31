@@ -8,7 +8,7 @@ window.Gateway = function() {
   humanTypes = {
     rail: "Трамвай",
     bus: "Автобус",
-    troll: "Троллейбус"
+    trol: "Троллейбус"
   };
   normalize = function(str) {
     return str.replace(/\t|\r|\n/g, "").replace(/&nbsp;/g, " ");
@@ -216,8 +216,13 @@ $(function() {
     $this.toggleClass("expanded");
     if ($this.is(".expanded")) {
       $transport.empty();
-      console.log("stopId: " + stopId);
+      $details.addClass("loading");
+      $details.removeClass("empty");
       return gateway.loadTransport(stopId, function(transport) {
+        $details.removeClass("loading");
+        if (transport.length === 0) {
+          $details.addClass("empty");
+        }
         return _.each(transport, function(item) {
           var $card;
           $card = transportShortCardTemplate(item);
@@ -315,6 +320,7 @@ $(function() {
   setGeoState = function() {
     if (showGeo) {
       $searchCard.addClass("geolocated");
+      $search.attr("disabled", "disabled");
       return findStops("");
     } else {
       showGeo = false;
@@ -347,15 +353,17 @@ $(function() {
   $currentStop.on("click", reset);
   $geolocator.on("click", function() {
     if (pos) {
-      if (showGeo) {
-        $searchCard.removeClass("geolocated");
-        $search.focus();
-      } else {
-        $searchCard.addClass("geolocated");
-        findStops("");
-      }
       showGeo = !showGeo;
-      return $.cookie("showGeo", showGeo);
+      $.cookie("showGeo", showGeo);
+      if (showGeo) {
+        $searchCard.addClass("geolocated");
+        $search.attr("disabled", "disabled");
+        return findStops("");
+      } else {
+        $searchCard.removeClass("geolocated");
+        $search.removeAttr("disabled");
+        return $search.focus();
+      }
     }
   });
   return FastClick.attach(document.body);

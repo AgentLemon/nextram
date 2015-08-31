@@ -208,6 +208,46 @@ body {
 .short-details {
   height: 90px;
   padding: 5px 11px 10px 11px;
+  position: relative;
+
+  &.loading {
+    ul {
+      opacity: 0;
+    }
+
+    .overlay.loading {
+      display: block;
+    }
+  }
+
+  &.empty {
+    .overlay.empty {
+      display: block;
+    }
+  }
+
+  .overlay {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    &.loading {
+      background-image: url(loading.gif);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: 15%;
+    }
+
+    &.empty {
+      color: #aaa;
+      font-size: 30px;
+      text-align: center;
+      padding-top: 35px;
+    }
+  }
 
   ul {
     list-style: none;
@@ -217,6 +257,7 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
+    transition: opacity 0.125s ease-in;
 
     li {
       display: inline-block;
@@ -244,7 +285,7 @@ body {
         }
       }
 
-      &.troll {
+      &.trol {
         .transport-title {
           background-color: #2e6da4;
         }

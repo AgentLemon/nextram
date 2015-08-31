@@ -91,7 +91,6 @@ $ ->
     )
     result
 
-
   showTransportShort = ->
     $this = $(this)
     $details = $this.next(".short-details")
@@ -103,8 +102,12 @@ $ ->
 
     if ($this.is(".expanded"))
       $transport.empty()
-      console.log("stopId: #{stopId}")
+      $details.addClass("loading")
+      $details.removeClass("empty")
       gateway.loadTransport(stopId, (transport) ->
+        $details.removeClass("loading")
+        if (transport.length == 0)
+          $details.addClass("empty")
         _.each(transport, (item) -> 
           $card = transportShortCardTemplate(item)
           $transport.append($card)
@@ -189,6 +192,7 @@ $ ->
   setGeoState = ->
     if showGeo
       $searchCard.addClass("geolocated")
+      $search.attr("disabled", "disabled")
       findStops("")
     else
       showGeo = false
@@ -218,14 +222,16 @@ $ ->
 
   $geolocator.on("click", ->
     if pos
-      if showGeo
-        $searchCard.removeClass("geolocated")
-        $search.focus()
-      else
-        $searchCard.addClass("geolocated")
-        findStops("")
       showGeo = !showGeo
       $.cookie("showGeo", showGeo)
+      if showGeo
+        $searchCard.addClass("geolocated")
+        $search.attr("disabled", "disabled")
+        findStops("")
+      else
+        $searchCard.removeClass("geolocated")
+        $search.removeAttr("disabled")
+        $search.focus()
   )
 
   FastClick.attach(document.body)
