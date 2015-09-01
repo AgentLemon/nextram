@@ -1,9 +1,11 @@
 $ -> 
   stopCardTemplate = _.template($("#stop-card-template").html())
   transportShortCardTemplate = _.template($("#transport-short-card-template").html())
+  transportFullCardTemplate = _.template($("#transport-full-card-template").html())
 
   stopsCount = 15
 
+  $body = $("body")
   $page = $(".page-wrap")
   $search = $(".search")
   $searchCard = $(".search-card")
@@ -91,6 +93,11 @@ $ ->
     )
     result
 
+  showTransportFull = (transport) ->
+    $card = $(transportFullCardTemplate(transport))
+    $card.appendTo($body)
+
+
   showTransportShort = ->
     $this = $(this)
     $details = $this.next(".short-details")
@@ -104,13 +111,14 @@ $ ->
       $transport.empty()
       $details.addClass("loading")
       $details.removeClass("empty")
-      gateway.loadTransport(stopId, (transport) ->
+      gateway.loadTransport(stopId, (transports) ->
         $details.removeClass("loading")
-        if (transport.length == 0)
+        if (transports.length == 0)
           $details.addClass("empty")
-        _.each(transport, (item) -> 
-          $card = transportShortCardTemplate(item)
+        _.each(transports, (item) -> 
+          $card = $(transportShortCardTemplate(item))
           $transport.append($card)
+          $card.on("click", -> showTransportFull(item))
         )
       )
 

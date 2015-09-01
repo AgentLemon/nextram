@@ -49,3 +49,14 @@ script type="html/template" id="transport-short-card-template"
   .transport-number <%= number %>
   .transport-estimate <%= est %> мин
   | </li>
+
+script type="html/template" id="transport-full-card-template"
+  .large-transport-card-overlay
+  | <div class="large-transport-card <%= type %>">
+  .transport-title <%= humanType %>
+  .transport-details <%= spec %>
+  .transport-number <%= number %>
+  .transport-estimate <%= est %> мин
+  .transport-marker <%= marker %>
+  .transport-route <%= route %>
+  | </div>

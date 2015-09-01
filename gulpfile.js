@@ -68,7 +68,7 @@ gulp.task('watch', function() {
   gulp.run('sass');
   gulp.run('slim');
 
-  server.listen(35729, function(err) {
+  server.listen(357291, function(err) {
     if (err) return console.log(err);
 
     gulp.watch('./assets/img/**/*', function() {

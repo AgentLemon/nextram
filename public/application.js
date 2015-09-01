@@ -78,10 +78,12 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportShortCardTemplate;
+  var $body, $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
   stopCardTemplate = _.template($("#stop-card-template").html());
   transportShortCardTemplate = _.template($("#transport-short-card-template").html());
+  transportFullCardTemplate = _.template($("#transport-full-card-template").html());
   stopsCount = 15;
+  $body = $("body");
   $page = $(".page-wrap");
   $search = $(".search");
   $searchCard = $(".search-card");
@@ -206,6 +208,11 @@ $(function() {
     });
     return result;
   };
+  showTransportFull = function(transport) {
+    var $card;
+    $card = $(transportFullCardTemplate(transport));
+    return $card.appendTo($body);
+  };
   showTransportShort = function() {
     var $details, $this, $transport, stopId;
     $this = $(this);
@@ -218,15 +225,18 @@ $(function() {
       $transport.empty();
       $details.addClass("loading");
       $details.removeClass("empty");
-      return gateway.loadTransport(stopId, function(transport) {
+      return gateway.loadTransport(stopId, function(transports) {
         $details.removeClass("loading");
-        if (transport.length === 0) {
+        if (transports.length === 0) {
           $details.addClass("empty");
         }
-        return _.each(transport, function(item) {
+        return _.each(transports, function(item) {
           var $card;
-          $card = transportShortCardTemplate(item);
-          return $transport.append($card);
+          $card = $(transportShortCardTemplate(item));
+          $transport.append($card);
+          return $card.on("click", function() {
+            return showTransportFull(item);
+          });
         });
       });
     }

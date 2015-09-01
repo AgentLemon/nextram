@@ -264,35 +264,11 @@ body {
       border: solid 1px #ddd;
       text-align: center;
       width: 59px;
+      cursor: pointer;
+      margin-right: 4px;
 
-      &.rail {
-        .transport-title {
-          background-color: #c9302c;
-        }
-
-        .transport-number {
-          color: #c9302c;
-        }
-      }
-
-      &.bus {
-        .transport-title {
-          background-color: #eea236;
-        }
-
-        .transport-number {
-          color: #eea236;
-        }
-      }
-
-      &.trol {
-        .transport-title {
-          background-color: #2e6da4;
-        }
-
-        .transport-number {
-          color: #2e6da4;
-        }
+      &:last-child {
+        margin-right: 0;
       }
 
       .transport-title {
@@ -314,6 +290,97 @@ body {
         border-top: solid 1px #ddd;
       }
     }
+  }
+}
+
+.large-transport-card-overlay {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.large-transport-card {
+  background-color: #fafafa;
+  border: solid 1px #444;
+  position: fixed;
+  z-index: 101;
+  width: 250px;
+  margin-left: -125px;
+  margin-top: -200px;
+  left: 50%;
+  top: 50%;
+
+  .transport-title {
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    padding: 3px 0;
+  }
+
+  .transport-number {
+    text-align: center;
+    font-weight: bold;
+    font-size: 130px;
+    margin: 0;
+  }
+
+  .transport-estimate {
+    margin: 0 15px;
+    border-top: solid 1px #ddd;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .transport-marker, .transport-route {
+    border-top: dashed 1px #ddd;
+    margin: 0 30px;
+    text-align: center;
+    padding: 5px 0;
+  }
+
+  .transport-route {
+    margin-bottom: 20px;
+  }
+
+  .transport-details {
+    color: #aaa;
+    text-align: right;
+    padding-right: 10px;
+  }
+}
+
+.rail {
+  .transport-title {
+    background-color: #c9302c;
+  }
+
+  .transport-number {
+    color: #c9302c;
+  }
+}
+
+.bus {
+  .transport-title {
+    background-color: #eea236;
+  }
+
+  .transport-number {
+    color: #eea236;
+  }
+}
+
+.trol {
+  .transport-title {
+    background-color: #2e6da4;
+  }
+
+  .transport-number {
+    color: #2e6da4;
   }
 }
 
@@ -367,189 +434,3 @@ body {
     background-color: #46b8da;
   }
 }
-
-// .find-stop {
-//   width: 100%;
-//   height: 40px;
-//   padding: 5px 45px 5px 10px;
-//   font-size: 24px;
-//   border: none;
-//   border-radius: 0;
-// }
-
-// .search-wrap {
-//   border: solid 1px #428fec;
-//   position: relative;
-//   overflow: hidden;
-// }
-
-// .geolocator-wrap {
-//   display: none;
-//   position: absolute;
-//   height: 40px;
-//   width: 100%;
-//   padding: 5px 5px 5px 100px;
-//   color: #777;
-//   font-size: 24px;
-//   background-color: #ddd;
-//   top: 0px;
-//   left: 260px;
-//   transition: 0.25s ease-in-out;
-
-//   &.standby {
-//     opacity: 0.3;
-//   }
-
-//   &.opened {
-//     left: 0px;
-//   }
-
-//   .geolocator {
-//     height: 40px;
-//     width: 40px;
-//     left: 0;
-//     top: 0;
-//     position: absolute;
-//     cursor: pointer;
-//     background-image: url("geolocator.png");
-//     background-repeat: no-repeat;
-//     background-size: 100%;
-//     border: none;
-//     background-color: #4098d3;
-//     color: #fff;
-//     background-image: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.5) 51%);
-
-//     img {
-//       width: 32px;
-//       height: 32px;
-//       margin: 4px;
-//     }
-//   }
-// }
-
-// .item {
-//   padding: 10px 10px;
-//   border-bottom: solid 1px #ddd;
-
-//   &.transport-top {
-//     display: none;
-
-//     .reload {
-//       width: 100%;
-//       height: 50px;
-//       font-size: 24px;
-//       border-radius: 0;
-//       background-color: #428fec;
-//       color: white;
-//       border: none;
-//       cursor: pointer;
-//     }
-//   }
-
-//   &.stop {
-//     cursor: pointer;
-
-//     &.current-stop {
-//       display: none;
-//     }
-
-//     .name {
-//       font-size: 22px;
-//     }
-
-//     .subname {
-//       color: #777;
-//       font-size: 14px;
-//     }
-//   }
-
-//   &.transport {
-
-//     &.bus {
-//       color: #ffba00;
-//       .icon {
-//         background-position-y: -9%;
-//       }
-//     }
-
-//     &.rail {
-//       color: #d30000;
-//       .icon {
-//         background-position-y: 94%;
-//       }
-//     }
-
-//     &.trol {
-//       color: #0000ff;
-//       .icon {
-//         background-position-y: 45%;
-//       }
-//     }
-
-//     .est {
-//       display: inline-block;
-//       position: relative;
-//       width: 35px;
-//       float: left;
-//       text-align: center;
-//       margin-right: 10px;
-//       padding-top: 40px;
-
-//       .icon {
-//         position: absolute;
-//         width: 32px;
-//         height: 32px;
-//         left: 2px;
-//         top: 3px;
-//         overflow: hidden;
-//         background-image: url("transport.png");
-//         background-repeat: no-repeat;
-//         background-size: 100%;
-//       }
-
-//       .est-time {
-//         font-size: 24px;
-//       }
-//     }
-
-//     div.route {
-//       text-align: right;
-//       margin-bottom: 10px;
-//       padding-bottom: 10px;
-//       border-bottom: dashed 1px #ddd;
-//       margin-left: 40px;
-//       min-height: 40px;
-
-//       .number {
-//         display: inline-block;
-//         float: left;
-//         font-size: 30px;
-//         margin-right: 10px;
-//         padding-top: 2px;
-//       }
-
-//       span.route {
-//         color: #777
-//       }
-//     }
-
-//     .spec {
-//       margin-left: 40px;
-//       text-align: right;
-//       color: #777;
-//       font-size: 12px;
-//     }
-
-//     .marker {
-//       text-align: right;
-//       color: #777;
-//       font-size: 12px;
-//     }
-//   }
-
-//   &.empty {
-//     color: #777;
-//     text-align: center;
-//   }
-
-// }
