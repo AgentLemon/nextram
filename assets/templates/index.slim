@@ -51,8 +51,8 @@ script type="html/template" id="transport-short-card-template"
   | </li>
 
 script type="html/template" id="transport-full-card-template"
-  .large-transport-card-overlay
-  | <div class="large-transport-card <%= type %>">
+  .large-transport-card-overlay.hidden
+  | <div class="large-transport-card hidden <%= type %>">
   .transport-title <%= humanType %>
   .transport-details <%= spec %>
   .transport-number <%= number %>

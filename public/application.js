@@ -78,17 +78,19 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $body, $currentStop, $geolocator, $geowrap, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, locationHash, normalizeStops, openStop, pos, pushStop, reload, reset, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
+  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, normalizeStops, openStop, pos, pushStop, reload, removeFullCard, reset, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
   stopCardTemplate = _.template($("#stop-card-template").html());
   transportShortCardTemplate = _.template($("#transport-short-card-template").html());
   transportFullCardTemplate = _.template($("#transport-full-card-template").html());
   stopsCount = 15;
   $body = $("body");
+  $html = $("html");
   $page = $(".page-wrap");
   $search = $(".search");
   $searchCard = $(".search-card");
   $geolocator = $(".geolocator");
   $noContent = $(".no-content");
+  $fullCard = null;
   $results = $(".results");
   $geowrap = $(".geowrap");
   $transportTop = $(".transport-top");
@@ -208,10 +210,25 @@ $(function() {
     });
     return result;
   };
+  removeFullCard = function() {
+    if ($fullCard) {
+      $fullCard.addClass("hidden");
+      window.location.hash = "";
+      return setTimeout((function() {
+        $fullCard.remove();
+        return $html.removeClass("overlayed");
+      }), 250);
+    }
+  };
   showTransportFull = function(transport) {
-    var $card;
-    $card = $(transportFullCardTemplate(transport));
-    return $card.appendTo($body);
+    $fullCard = $(transportFullCardTemplate(transport));
+    $fullCard.appendTo($body);
+    $html.addClass("overlayed");
+    window.location.hash = "full-card";
+    setTimeout((function() {
+      return $fullCard.removeClass("hidden");
+    }), 0);
+    return $fullCard.on("click", removeFullCard);
   };
   showTransportShort = function() {
     var $details, $this, $transport, stopId;
@@ -348,13 +365,6 @@ $(function() {
       return setGeoState();
     });
   }
-  locationHash = getLocationHash();
-  if (locationHash && locationHash.id) {
-    openStop(locationHash.id, locationHash.name, locationHash.subname);
-    timer = setInterval(reload, 30000);
-  } else {
-    reset();
-  }
   $search.on("input paste focus", _.debounce(loadStops, 250));
   $(".reload").on("click", function() {
     setLoading();
@@ -374,6 +384,11 @@ $(function() {
         $search.removeAttr("disabled");
         return $search.focus();
       }
+    }
+  });
+  $(window).bind("hashchange", function() {
+    if (window.location.hash === "") {
+      return removeFullCard();
     }
   });
   return FastClick.attach(document.body);

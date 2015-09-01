@@ -1,5 +1,13 @@
 html {
   overflow-y: scroll;
+
+  &.overlayed {
+    overflow: hidden;
+
+    body {
+      overflow: hidden;
+    }
+  }
 }
 
 body {
@@ -9,7 +17,6 @@ body {
 }
 
 .page-wrap {
-  padding: 0;
   min-width: 300px;
   max-width: 300px;
   width: 80%;
@@ -294,6 +301,7 @@ body {
 }
 
 .large-transport-card-overlay {
+  transition: opacity 0.125s ease-in;
   position: fixed;
   z-index: 100;
   left: 0;
@@ -301,11 +309,19 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+
+  &.hidden {
+    transition: opacity 0.125s ease-in 0.125s;
+    opacity: 0;
+  }
 }
 
 .large-transport-card {
+  transition: all 0.125s ease-in 0.125s;
   background-color: #fafafa;
   border: solid 1px #444;
+  box-shadow: rgba(0,0,0,0.3) 0 0 10px 5px;
   position: fixed;
   z-index: 101;
   width: 250px;
@@ -313,6 +329,12 @@ body {
   margin-top: -200px;
   left: 50%;
   top: 50%;
+  cursor: pointer;
+
+  &.hidden {
+    transition: opacity 0.125s ease-in;
+    opacity: 0;
+  }
 
   .transport-title {
     color: white;

@@ -6,11 +6,13 @@ $ ->
   stopsCount = 15
 
   $body = $("body")
+  $html = $("html")
   $page = $(".page-wrap")
   $search = $(".search")
   $searchCard = $(".search-card")
   $geolocator = $(".geolocator")
   $noContent = $(".no-content")
+  $fullCard = null
   
   $results = $(".results")
   $geowrap = $(".geowrap")
@@ -93,10 +95,22 @@ $ ->
     )
     result
 
-  showTransportFull = (transport) ->
-    $card = $(transportFullCardTemplate(transport))
-    $card.appendTo($body)
+  removeFullCard = ->
+    if ($fullCard)
+      $fullCard.addClass("hidden")
+      window.location.hash = ""
+      setTimeout((->
+        $fullCard.remove()
+        $html.removeClass("overlayed")
+      ), 250)
 
+  showTransportFull = (transport) ->
+    $fullCard = $(transportFullCardTemplate(transport))
+    $fullCard.appendTo($body)
+    $html.addClass("overlayed")
+    window.location.hash = "full-card"
+    setTimeout((-> $fullCard.removeClass("hidden")), 0)
+    $fullCard.on("click", removeFullCard)
 
   showTransportShort = ->
     $this = $(this)
@@ -214,13 +228,6 @@ $ ->
       setGeoState()
     )
 
-  locationHash = getLocationHash()
-  if locationHash && locationHash.id
-    openStop(locationHash.id, locationHash.name, locationHash.subname)
-    timer = setInterval(reload, 30000)
-  else
-    reset()
-
   $search.on("input paste focus", _.debounce(loadStops, 250))
   $(".reload").on("click", ->
     setLoading()
@@ -240,6 +247,11 @@ $ ->
         $searchCard.removeClass("geolocated")
         $search.removeAttr("disabled")
         $search.focus()
+  )
+
+  $(window).bind("hashchange", ->
+    if (window.location.hash == "")
+      removeFullCard()
   )
 
   FastClick.attach(document.body)
