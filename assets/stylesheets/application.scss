@@ -227,6 +227,12 @@ body {
     }
   }
 
+  &.reloading {
+    .overlay.reloading {
+      display: block;
+    }
+  }
+
   &.empty {
     .overlay.empty {
       display: block;
@@ -246,6 +252,21 @@ body {
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: 15%;
+    }
+
+    &.reloading {
+      width: 20px;
+      height: 20px;
+      left: 2px;
+      top: -4px;
+      right: auto;
+      bottom: auto;
+      background-image: url(reloading.gif);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: 100%;
+      background-color: rgba(200,200,200,0.7);
+      border-radius: 10px;
     }
 
     &.empty {

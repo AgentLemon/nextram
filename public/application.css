@@ -160,6 +160,8 @@ body {
     opacity: 0; }
   .short-details.loading .overlay.loading {
     display: block; }
+  .short-details.reloading .overlay.reloading {
+    display: block; }
   .short-details.empty .overlay.empty {
     display: block; }
   .short-details .overlay {
@@ -174,6 +176,19 @@ body {
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: 15%; }
+    .short-details .overlay.reloading {
+      width: 20px;
+      height: 20px;
+      left: 2px;
+      top: -4px;
+      right: auto;
+      bottom: auto;
+      background-image: url(reloading.gif);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: 100%;
+      background-color: rgba(200, 200, 200, 0.7);
+      border-radius: 10px; }
     .short-details .overlay.empty {
       color: #aaa;
       font-size: 30px;
