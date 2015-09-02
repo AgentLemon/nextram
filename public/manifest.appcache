@@ -7,8 +7,10 @@ application.css
 vendor.js
 application.js
 stops.js
-transport.png
-geolocator.png
+angle-down.png
+angle-up.png
+loading.gif
+reloading.gif
 http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic
 
 NETWORK:

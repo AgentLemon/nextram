@@ -1,5 +1,5 @@
 window.Gateway = function() {
-  var fixLayout, humanTypes, layout, normalize, parseStops, parseTransport, self, stopsUrl, transportRegexp, transportUrl;
+  var fixLayout, humanTypes, layout, normalize, parseStops, parseTransport, self, stopsUrl, transportRegexp, transportUrl, unpackStop;
   self = this;
   stopsUrl = "http://tosamara.ru/poisk/stops.php";
   transportUrl = "http://tosamara.ru/xml_bridge.php";
@@ -19,6 +19,15 @@ window.Gateway = function() {
     });
     return str;
   };
+  unpackStop = function(stop) {
+    return {
+      id: stop.i,
+      name: stop.n,
+      subname: stop.d,
+      lat: stop.a,
+      lon: stop.o
+    };
+  };
   parseStops = function(name) {
     var i, regexp, result, stop;
     result = [];
@@ -27,13 +36,7 @@ window.Gateway = function() {
     while (i < stops.length) {
       stop = stops[i];
       if (stop.n.search(regexp) > -1) {
-        result.push({
-          id: stop.i,
-          name: stop.n,
-          subname: stop.d,
-          lat: stop.a,
-          lon: stop.o
-        });
+        result.push(unpackStop(stop));
       }
       i++;
     }
@@ -64,6 +67,23 @@ window.Gateway = function() {
   self.loadStops = function(name, callback) {
     return callback(parseStops(fixLayout(name)));
   };
+  self.findStopsByIds = function(ids, callback) {
+    var i, j, result, stop;
+    result = [];
+    i = 0;
+    ids = _.map(ids, function(i) {
+      return i.toString();
+    });
+    while (i < stops.length) {
+      stop = stops[i];
+      j = 0;
+      if (ids.indexOf(stop.i) > -1) {
+        result.push(unpackStop(stop));
+      }
+      i++;
+    }
+    return callback(result);
+  };
   self.loadTransport = function(stopId, callback) {
     return $.post(transportUrl, {
       method: "getFirstArrivalToStop",
@@ -78,7 +98,7 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, displayTransport, findStops, gateway, getDistance, getLocationHash, groupStops, lastStopId, loadStops, normalizeStops, openStop, pos, pushStop, reload, removeFullCard, reset, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, state, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
+  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, findStops, gateway, getDistance, groupStops, loadStops, normalizeStops, pos, pushStop, removeFullCard, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
   stopCardTemplate = _.template($("#stop-card-template").html());
   transportShortCardTemplate = _.template($("#transport-short-card-template").html());
   transportFullCardTemplate = _.template($("#transport-full-card-template").html());
@@ -97,61 +117,20 @@ $(function() {
   $currentStop = $(".current-stop");
   gateway = new Gateway();
   timer = new Timer(30000);
-  lastStopId = null;
-  state = "stops";
   showGeo = $.parseJSON($.cookie("showGeo") || false);
   pos = null;
   setLoading = function() {
     return $results.empty().append($('<div class="item empty"></div>').text("Загружаю..."));
   };
-  pushStop = function(id, name, subname, lat, lon) {
-    var stops, stopsCookie;
+  pushStop = function(id) {
+    var lastStops, stopsCookie;
     stopsCookie = $.cookie("lastStops");
-    stops = stopsCookie && $.parseJSON(stopsCookie) || [];
-    stops = _.reject(stops, function(stop) {
-      return !stop || stop.id === id;
+    lastStops = stopsCookie && $.parseJSON(stopsCookie) || [];
+    lastStops = _.reject(lastStops, id);
+    lastStops.unshift(id);
+    return $.cookie("lastStops", JSON.stringify(lastStops.slice(0, stopsCount)), {
+      expires: 3560
     });
-    stops.unshift({
-      id: id,
-      name: name,
-      subname: subname,
-      lat: lat,
-      lon: lon
-    });
-    return $.cookie("lastStops", JSON.stringify(stops.slice(0, 10)), {
-      expires: 356
-    });
-  };
-  openStop = function(stopId, name, subname, store, lat, lon) {
-    $geolocator.hide();
-    lastStopId = stopId;
-    state = "transport";
-    gateway.loadTransport(stopId, function(transport) {
-      return displayTransport(transport);
-    });
-    if (name && subname) {
-      setLoading();
-      $transportTop.show();
-      $search.closest(".item").hide();
-      $currentStop.show();
-      $currentStop.find(".name").text(name);
-      $currentStop.find(".subname").text(subname);
-    }
-    if (store) {
-      window.location.hash = $.param({
-        id: stopId,
-        name: name,
-        subname: subname,
-        lat: lat,
-        lon: lon
-      });
-      return pushStop(stopId, name, subname, lat, lon);
-    }
-  };
-  reload = function() {
-    if (lastStopId) {
-      return openStop(lastStopId);
-    }
   };
   clear = function() {
     $(".stop-card").remove();
@@ -262,6 +241,7 @@ $(function() {
       $details.addClass("loading");
       $details.removeClass("empty");
       load();
+      pushStop(stopId);
       return timer.push(stopId, function() {
         $details.addClass("reloading");
         return load();
@@ -271,43 +251,20 @@ $(function() {
     }
   };
   displayStops = function(stops) {
-    if (state === "stops") {
-      $noContent.addClass("hidden");
-      clear();
-      return _.each(groupStops(stops), function(stop, index) {
-        var $card;
-        $card = $(stopCardTemplate(stop));
-        $card.addClass("hidden");
-        $card.find(".show-short").on("click", showTransportShort);
-        window.setTimeout((function() {
-          return $card.removeClass("hidden");
-        }), index * 200);
-        return $page.append($card);
-      });
-    }
-  };
-  displayTransport = function(transport) {
-    if (state === "transport") {
-      $results.empty();
-      if (transport.length > 0) {
-        return _.each(transport, function(trans) {
-          var $est, $item, $marker, $route, $spec;
-          $item = $('<div class="item transport"></div>').addClass(trans.type);
-          $est = $('<div class="est"></div>').append($('<div class="icon"></div>')).append($("<span></span>").addClass("est-time").text(trans.est)).append(" мин");
-          $route = $('<div class="route"></div>').append($("<span/>").addClass("route").html(trans.route)).prepend($("<span></span>").addClass("number").text(trans.number));
-          $spec = $('<div class="spec"></div>').text(trans.spec);
-          $marker = $('<div class="marker"></div>').text(trans.marker);
-          $item.append($est).append($route).append($spec).append($marker);
-          return $results.append($item);
-        });
-      } else {
-        return $results.append($('<div class="item empty"></div>').text("Пусто :-("));
-      }
-    }
+    $noContent.addClass("hidden");
+    clear();
+    return _.each(groupStops(stops), function(stop, index) {
+      var $card;
+      $card = $(stopCardTemplate(stop));
+      $card.addClass("hidden");
+      $card.find(".show-short").on("click", showTransportShort);
+      window.setTimeout((function() {
+        return $card.removeClass("hidden");
+      }), index * 200);
+      return $page.append($card);
+    });
   };
   findStops = function(name) {
-    lastStopId = null;
-    $transportTop.hide();
     return gateway.loadStops(name, function(stops) {
       return displayStops(normalizeStops(stops));
     });
@@ -316,25 +273,12 @@ $(function() {
     var stopsCookie;
     stopsCookie = $.cookie("lastStops");
     if (stopsCookie) {
-      return displayStops(normalizeStops($.parseJSON(stopsCookie)));
+      return gateway.findStopsByIds($.parseJSON(stopsCookie), function(stops) {
+        return displayStops(normalizeStops(stops));
+      });
     } else {
       clear();
       return $noContent.removeClass("hidden");
-    }
-  };
-  reset = function() {
-    state = "stops";
-    clearInterval(timer);
-    $results.empty();
-    $search.closest(".item").show();
-    $transportTop.hide();
-    $currentStop.hide();
-    window.location.hash = "";
-    if (pos) {
-      $geolocator.show();
-      return setGeoState();
-    } else {
-      return $search.focus();
     }
   };
   loadStops = function() {
@@ -345,16 +289,6 @@ $(function() {
     } else {
       return displayLastStops();
     }
-  };
-  getLocationHash = function() {
-    var hash, param, regexp, result;
-    hash = window.location.hash;
-    result = {};
-    regexp = /[#&]?([^=]*)=([^&$]*)/g;
-    while ((param = regexp.exec(hash)) !== null) {
-      result[param[1]] = decodeURIComponent(param[2]).replace(/\+/g, " ");
-    }
-    return result;
   };
   setGeoState = function() {
     if (showGeo) {
@@ -382,7 +316,6 @@ $(function() {
     setLoading();
     return reload();
   });
-  $currentStop.on("click", reset);
   $geolocator.on("click", function() {
     if (pos) {
       showGeo = !showGeo;

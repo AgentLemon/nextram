@@ -21,40 +21,18 @@ $ ->
 
   gateway = new Gateway();
   timer = new Timer(30000);
-
-  lastStopId = null;
-  state = "stops"
   showGeo = $.parseJSON($.cookie("showGeo") || false);
   pos = null
 
   setLoading = ->
     $results.empty().append($('<div class="item empty"></div>').text("Загружаю..."))
 
-  pushStop = (id, name, subname, lat, lon) ->
+  pushStop = (id) ->
     stopsCookie = $.cookie("lastStops")
-    stops = stopsCookie && $.parseJSON(stopsCookie) || []
-    stops = _.reject(stops, (stop) -> !stop || stop.id == id)
-    stops.unshift(id: id, name: name, subname: subname, lat: lat, lon: lon)
-    $.cookie("lastStops", JSON.stringify(stops.slice(0, 10)), expires: 356)
-
-  openStop = (stopId, name, subname, store, lat, lon) ->
-    $geolocator.hide()
-    lastStopId = stopId
-    state = "transport"
-    gateway.loadTransport(stopId, (transport) -> displayTransport(transport))
-    if name && subname
-      setLoading()
-      $transportTop.show()
-      $search.closest(".item").hide()
-      $currentStop.show()
-      $currentStop.find(".name").text(name)
-      $currentStop.find(".subname").text(subname)
-    if store
-      window.location.hash = $.param(id: stopId, name: name, subname: subname, lat: lat, lon: lon)
-      pushStop(stopId, name, subname, lat, lon)
-
-  reload = ->
-    openStop(lastStopId) if lastStopId
+    lastStops = stopsCookie && $.parseJSON(stopsCookie) || []
+    lastStops = _.reject(lastStops, id)
+    lastStops.unshift(id)
+    $.cookie("lastStops", JSON.stringify(lastStops.slice(0, stopsCount)), expires: 3560)
 
   clear = ->
     $(".stop-card").remove()
@@ -142,6 +120,7 @@ $ ->
       $details.addClass("loading")
       $details.removeClass("empty")
       load()
+      pushStop(stopId)
       timer.push(stopId, ->
         $details.addClass("reloading")
         load()
@@ -150,64 +129,28 @@ $ ->
       timer.delete(stopId)
 
   displayStops = (stops) ->
-    if state == "stops"
-      $noContent.addClass("hidden")
-      clear()
-      _.each(groupStops(stops), (stop, index) ->
-        $card = $(stopCardTemplate(stop))
-        $card.addClass("hidden")
-        $card.find(".show-short").on("click", showTransportShort)
-        window.setTimeout((-> $card.removeClass("hidden")), index*200)
-        $page.append($card)
-      )
-
-  displayTransport = (transport) ->
-    if state == "transport"
-      $results.empty()
-      if transport.length > 0
-        _.each(transport, (trans) ->
-          $item = $('<div class="item transport"></div>').addClass(trans.type)
-          $est = $('<div class="est"></div>')
-            .append($('<div class="icon"></div>'))
-            .append($("<span></span>").addClass("est-time").text(trans.est))
-            .append(" мин")
-          $route = $('<div class="route"></div>')
-            .append($("<span/>").addClass("route").html(trans.route))
-            .prepend($("<span></span>").addClass("number").text(trans.number))
-          $spec = $('<div class="spec"></div>').text(trans.spec)
-          $marker = $('<div class="marker"></div>').text(trans.marker)
-          $item.append($est).append($route).append($spec).append($marker)
-          $results.append($item)
-        )
-      else
-        $results.append($('<div class="item empty"></div>').text("Пусто :-("))
+    $noContent.addClass("hidden")
+    clear()
+    _.each(groupStops(stops), (stop, index) ->
+      $card = $(stopCardTemplate(stop))
+      $card.addClass("hidden")
+      $card.find(".show-short").on("click", showTransportShort)
+      window.setTimeout((-> $card.removeClass("hidden")), index*200)
+      $page.append($card)
+    )
 
   findStops = (name) ->
-    lastStopId = null
-    $transportTop.hide()
     gateway.loadStops(name, (stops) -> displayStops(normalizeStops(stops)))
 
   displayLastStops = ->
     stopsCookie = $.cookie("lastStops")
     if stopsCookie
-      displayStops(normalizeStops($.parseJSON(stopsCookie)))
+      gateway.findStopsByIds($.parseJSON(stopsCookie), (stops) ->
+        displayStops(normalizeStops(stops))
+      )
     else
       clear()
       $noContent.removeClass("hidden")
-
-  reset = ->
-    state = "stops"
-    clearInterval(timer)
-    $results.empty()
-    $search.closest(".item").show()
-    $transportTop.hide()
-    $currentStop.hide()
-    window.location.hash = ""
-    if pos
-      $geolocator.show()
-      setGeoState()
-    else
-      $search.focus()
 
   loadStops = ->
     value = $search.val()
@@ -215,14 +158,6 @@ $ ->
       findStops(value)
     else
       displayLastStops()
-
-  getLocationHash = ->
-    hash = window.location.hash
-    result = {}
-    regexp = /[#&]?([^=]*)=([^&$]*)/g
-    while (param = regexp.exec(hash)) != null
-      result[param[1]] = decodeURIComponent(param[2]).replace(/\+/g, " ")
-    result
 
   setGeoState = ->
     if showGeo
@@ -246,7 +181,6 @@ $ ->
     setLoading()
     reload()
   )
-  $currentStop.on("click", reset)
 
   $geolocator.on("click", ->
     if pos

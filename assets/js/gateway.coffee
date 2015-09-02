@@ -19,6 +19,13 @@ window.Gateway = ->
     )
     str
 
+  unpackStop = (stop) ->
+    id: stop.i
+    name: stop.n
+    subname: stop.d
+    lat: stop.a
+    lon: stop.o
+
   parseStops = (name) ->
     result = []
     regexp = new RegExp("(^|[^А-Яа-я0-9])#{name}", "i")
@@ -26,13 +33,7 @@ window.Gateway = ->
     while (i < stops.length)
       stop = stops[i]
       if stop.n.search(regexp) > -1
-        result.push(
-          id: stop.i
-          name: stop.n
-          subname: stop.d
-          lat: stop.a
-          lon: stop.o
-        )
+        result.push(unpackStop(stop))
       i++
     result
 
@@ -57,6 +58,18 @@ window.Gateway = ->
 
   self.loadStops = (name, callback) ->
     callback(parseStops(fixLayout(name)))
+
+  self.findStopsByIds = (ids, callback) ->
+    result = []
+    i = 0
+    ids = _.map(ids, (i) -> i.toString())
+    while (i < stops.length)
+      stop = stops[i]
+      j = 0
+      if (ids.indexOf(stop.i) > -1)
+        result.push(unpackStop(stop))
+      i++
+    callback(result)
 
   self.loadTransport = (stopId, callback) ->
     $.post(transportUrl, method: "getFirstArrivalToStop", KS_ID: stopId, COUNT: 10, version: "mobile", (response) ->
