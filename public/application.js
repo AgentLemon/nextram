@@ -96,10 +96,10 @@ $(function() {
   $transportTop = $(".transport-top");
   $currentStop = $(".current-stop");
   gateway = new Gateway();
+  timer = new Timer(30000);
   lastStopId = null;
   state = "stops";
   showGeo = $.parseJSON($.cookie("showGeo") || false);
-  timer = null;
   pos = null;
   setLoading = function() {
     return $results.empty().append($('<div class="item empty"></div>').text("Загружаю..."));
@@ -154,7 +154,8 @@ $(function() {
     }
   };
   clear = function() {
-    return $(".stop-card").remove();
+    $(".stop-card").remove();
+    return timer.clear();
   };
   getDistance = function(lat, lon) {
     var dist, radlat1, radlat2, radlon1, radlon2, radtheta, theta;
@@ -231,19 +232,18 @@ $(function() {
     return $fullCard.on("click", removeFullCard);
   };
   showTransportShort = function() {
-    var $details, $this, $transport, stopId;
+    var $details, $this, $transport, load, stopId;
     $this = $(this);
     $details = $this.next(".short-details");
     $transport = $details.find("ul.transport");
     stopId = $this.closest(".content-wrap").data("id");
     $details.toggleClass("hidden");
     $this.toggleClass("expanded");
-    if ($this.is(".expanded")) {
-      $transport.empty();
-      $details.addClass("loading");
-      $details.removeClass("empty");
+    load = function() {
       return gateway.loadTransport(stopId, function(transports) {
+        $transport.empty();
         $details.removeClass("loading");
+        $details.removeClass("reloading");
         if (transports.length === 0) {
           $details.addClass("empty");
         }
@@ -256,6 +256,18 @@ $(function() {
           });
         });
       });
+    };
+    if ($this.is(".expanded")) {
+      $transport.empty();
+      $details.addClass("loading");
+      $details.removeClass("empty");
+      load();
+      return timer.push(stopId, function() {
+        $details.addClass("reloading");
+        return load();
+      });
+    } else {
+      return timer["delete"](stopId);
     }
   };
   displayStops = function(stops) {
@@ -393,3 +405,47 @@ $(function() {
   });
   return FastClick.attach(document.body);
 });
+
+window.Timer = function(interval) {
+  var count, functions, self, startTimer, stopTimer, tick, timer;
+  interval || (interval = 30000);
+  self = this;
+  functions = {};
+  timer = null;
+  count = 0;
+  tick = function() {
+    var func, key, results;
+    results = [];
+    for (key in functions) {
+      func = functions[key];
+      results.push(func());
+    }
+    return results;
+  };
+  startTimer = function() {
+    return timer = setInterval(tick, interval);
+  };
+  stopTimer = function() {
+    return clearInterval(timer);
+  };
+  self.clear = function() {
+    functions = {};
+    count = 0;
+    return stopTimer();
+  };
+  self.push = function(id, func) {
+    functions[id] = func;
+    count++;
+    if (count === 1) {
+      return startTimer();
+    }
+  };
+  self["delete"] = function(id) {
+    delete functions[id];
+    count--;
+    if (count === 0) {
+      return stopTimer();
+    }
+  };
+  return this;
+};

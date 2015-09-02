@@ -20,10 +20,11 @@ $ ->
   $currentStop = $(".current-stop")
 
   gateway = new Gateway();
+  timer = new Timer(30000);
+
   lastStopId = null;
   state = "stops"
   showGeo = $.parseJSON($.cookie("showGeo") || false);
-  timer = null
   pos = null
 
   setLoading = ->
@@ -57,6 +58,7 @@ $ ->
 
   clear = ->
     $(".stop-card").remove()
+    timer.clear()
 
   getDistance = (lat, lon) ->
     radlat1 = Math.PI * lat/180
@@ -121,12 +123,11 @@ $ ->
     $details.toggleClass("hidden")
     $this.toggleClass("expanded")
 
-    if ($this.is(".expanded"))
-      $transport.empty()
-      $details.addClass("loading")
-      $details.removeClass("empty")
+    load = ->
       gateway.loadTransport(stopId, (transports) ->
+        $transport.empty()
         $details.removeClass("loading")
+        $details.removeClass("reloading")
         if (transports.length == 0)
           $details.addClass("empty")
         _.each(transports, (item) -> 
@@ -135,6 +136,18 @@ $ ->
           $card.on("click", -> showTransportFull(item))
         )
       )
+
+    if ($this.is(".expanded"))
+      $transport.empty()
+      $details.addClass("loading")
+      $details.removeClass("empty")
+      load()
+      timer.push(stopId, ->
+        $details.addClass("reloading")
+        load()
+      )
+    else
+      timer.delete(stopId)
 
   displayStops = (stops) ->
     if state == "stops"
