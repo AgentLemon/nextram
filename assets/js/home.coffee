@@ -78,7 +78,7 @@ $ ->
   removeFullCard = ->
     if ($fullCard)
       $fullCard.addClass("hidden")
-      window.location.hash = ""
+      window.location.hash = "!/"
       setTimeout((->
         $fullCard.remove()
         $html.removeClass("overlayed")
@@ -88,7 +88,7 @@ $ ->
     $fullCard = $(transportFullCardTemplate(transport))
     $fullCard.appendTo($body)
     $html.addClass("overlayed")
-    window.location.hash = "full-card"
+    window.location.hash = "!/full-card"
     setTimeout((-> $fullCard.removeClass("hidden")), 0)
     $fullCard.on("click", removeFullCard)
 
@@ -197,7 +197,7 @@ $ ->
   )
 
   $(window).bind("hashchange", ->
-    if (window.location.hash == "")
+    if (window.location.hash == "" || window.location.hash == "#!/")
       removeFullCard()
   )
 

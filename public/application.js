@@ -193,7 +193,7 @@ $(function() {
   removeFullCard = function() {
     if ($fullCard) {
       $fullCard.addClass("hidden");
-      window.location.hash = "";
+      window.location.hash = "!/";
       return setTimeout((function() {
         $fullCard.remove();
         return $html.removeClass("overlayed");
@@ -204,7 +204,7 @@ $(function() {
     $fullCard = $(transportFullCardTemplate(transport));
     $fullCard.appendTo($body);
     $html.addClass("overlayed");
-    window.location.hash = "full-card";
+    window.location.hash = "!/full-card";
     setTimeout((function() {
       return $fullCard.removeClass("hidden");
     }), 0);
@@ -332,7 +332,7 @@ $(function() {
     }
   });
   $(window).bind("hashchange", function() {
-    if (window.location.hash === "") {
+    if (window.location.hash === "" || window.location.hash === "#!/") {
       return removeFullCard();
     }
   });
