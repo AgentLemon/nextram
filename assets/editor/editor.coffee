@@ -24,10 +24,15 @@ $( ->
         showStop(stop)
       i++
 
+  focusSearch = ->
+    $search.focus()
+    $search[0].setSelectionRange(0, $search.val().length)
+
   selectStop = ($item) ->
     $results.find(".selected").removeClass("selected")
     $item.addClass("selected")
     stopId = $item.data("id")
+    focusSearch()
 
   save = ->
     console.log(JSON.stringify(stops, null, 2))
@@ -42,10 +47,11 @@ $( ->
         showStop(stop)
         $results.find(".selected").addClass("geocoded")
       i++
-
+    focusSearch()
+  
   displayStops = ->
     search = $search.val()
-    regexp = new RegExp(search, 'ig')
+    regexp = new RegExp(search.replace(/ /g, ".*"), 'ig')
     $results.empty()
     i = 0
     while (i < stops.length)
@@ -81,6 +87,10 @@ $( ->
       $coords.text("#{coords.x} : #{coords.y}")
     )
 
+    map.events.add('click', (e) ->
+      map.setCenter(e.get('coords'))
+    )
+
     showStops()
 
   ymaps.ready(init)
@@ -88,4 +98,8 @@ $( ->
   $search.on("input paste", -> displayStops())
   $apply.on("click", apply)
   $save.on("click", save)
+  $(document).on("keypress", (e) ->
+    if (e.charCode == 13)
+      apply()
+  )
 )

@@ -7,12 +7,12 @@
   padding: 10px; }
   .stops .coords {
     text-align: center;
-    font-size: 10px; }
+    font-size: 12px; }
   .stops .search {
     width: 100%; }
   .stops .results {
     position: absolute;
-    top: 80px;
+    top: 90px;
     padding: 0 10px 10px 10px;
     bottom: 0;
     left: 0;
@@ -21,7 +21,7 @@
     overflow-x: hidden; }
   .stops .item {
     margin-bottom: 10px;
-    font-size: 10px;
+    font-size: 12px;
     cursor: pointer; }
     .stops .item.selected {
       background-color: #aaf; }

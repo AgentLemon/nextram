@@ -1,5 +1,5 @@
 $(function() {
-  var $apply, $coords, $results, $save, $search, apply, coords, displayStops, init, save, selectStop, showStop, showStops, stopId;
+  var $apply, $coords, $results, $save, $search, apply, coords, displayStops, focusSearch, init, save, selectStop, showStop, showStops, stopId;
   $search = $(".search");
   $results = $(".results");
   $coords = $(".coords");
@@ -33,18 +33,22 @@ $(function() {
     }
     return results;
   };
+  focusSearch = function() {
+    $search.focus();
+    return $search[0].setSelectionRange(0, $search.val().length);
+  };
   selectStop = function($item) {
     $results.find(".selected").removeClass("selected");
     $item.addClass("selected");
-    return stopId = $item.data("id");
+    stopId = $item.data("id");
+    return focusSearch();
   };
   save = function() {
     return console.log(JSON.stringify(stops, null, 2));
   };
   apply = function() {
-    var i, results, stop;
+    var i, stop;
     i = 0;
-    results = [];
     while (i < stops.length) {
       stop = stops[i];
       if (stop.i.toString() === stopId.toString()) {
@@ -53,14 +57,14 @@ $(function() {
         showStop(stop);
         $results.find(".selected").addClass("geocoded");
       }
-      results.push(i++);
+      i++;
     }
-    return results;
+    return focusSearch();
   };
   displayStops = function() {
     var $details, $item, i, regexp, results, search, stop;
     search = $search.val();
-    regexp = new RegExp(search, 'ig');
+    regexp = new RegExp(search.replace(/ /g, ".*"), 'ig');
     $results.empty();
     i = 0;
     results = [];
@@ -102,6 +106,9 @@ $(function() {
       };
       return $coords.text(coords.x + " : " + coords.y);
     });
+    map.events.add('click', function(e) {
+      return map.setCenter(e.get('coords'));
+    });
     return showStops();
   };
   ymaps.ready(init);
@@ -109,5 +116,10 @@ $(function() {
     return displayStops();
   });
   $apply.on("click", apply);
-  return $save.on("click", save);
+  $save.on("click", save);
+  return $(document).on("keypress", function(e) {
+    if (e.charCode === 13) {
+      return apply();
+    }
+  });
 });
