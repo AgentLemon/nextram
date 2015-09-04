@@ -1,0 +1,22 @@
+html
+  head
+    title Stops Editor
+    
+    script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"
+    script type="text/javascript" src="vendor.js"
+    script type="text/javascript" src="stops.js"
+    script type="text/javascript" src="editor.js"
+    
+    link href="editor.css" type="text/css" rel="stylesheet"
+  body
+    .stops
+      .coords
+      br
+      button.apply Apply
+      button.save Save
+      br
+      input.search
+      br
+      .results
+    .map#map
+      .target

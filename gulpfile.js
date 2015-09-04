@@ -33,16 +33,28 @@ gulp.task('coffee', function() {
     .pipe(coffee({bare: true}).on('error', gutil.log))
     .pipe(concat('application.js'))
     .pipe(gulp.dest('./public/'))
+
+  gulp.src('./assets/editor/**/*.coffee')
+    .pipe(coffee({bare: true}).on('error', gutil.log))
+    .pipe(gulp.dest('./public/'))
 });
 
 gulp.task('sass', function () {
   gulp.src('./assets/stylesheets/**/*.scss')
     .pipe(sass().on('error', gutil.log))
     .pipe(gulp.dest('./public/'));
+
+  gulp.src('./assets/editor/**/*.scss')
+    .pipe(sass().on('error', gutil.log))
+    .pipe(gulp.dest('./public/'));
 });
 
 gulp.task('slim', function(){
   gulp.src("./assets/templates/**/*.slim")
+    .pipe(slim({ pretty: true, chdir: true, bundler: true }))
+    .pipe(gulp.dest("./public/"));
+
+  gulp.src("./assets/editor/**/*.slim")
     .pipe(slim({ pretty: true, chdir: true, bundler: true }))
     .pipe(gulp.dest("./public/"));
 });
@@ -68,7 +80,7 @@ gulp.task('watch', function() {
   gulp.run('sass');
   gulp.run('slim');
 
-  server.listen(357291, function(err) {
+  server.listen(35729, function(err) {
     if (err) return console.log(err);
 
     gulp.watch('./assets/img/**/*', function() {
@@ -85,6 +97,11 @@ gulp.task('watch', function() {
     });
     gulp.watch('./assets/templates/**/*', function() {
       gulp.run('slim');
+    });
+    gulp.watch('./assets/editor/**/*', function() {
+      gulp.run('slim');
+      gulp.run('sass');
+      gulp.run('coffee');
     });
   });
   gulp.run('http-server');

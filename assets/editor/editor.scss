@@ -1,0 +1,61 @@
+.stops {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
+
+  .coords {
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .apply {
+
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .item {
+    margin-bottom: 10px;
+    font-size: 10px;
+    cursor: pointer;
+
+    &.selected {
+      background-color: #aaf;
+    }
+
+    &.geocoded {
+      opacity: 0.3;
+    }
+
+    .details {
+      color: #777;
+    }
+  }
+}
+
+.map {
+  position: absolute;
+  border: solid 1px #777;
+  left: 200px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  .target {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-top: solid 2px #a33;
+    border-left: solid 2px #a33;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+  }
+}
