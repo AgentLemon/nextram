@@ -39,6 +39,8 @@ $( ->
       if (stop.i.toString() == stopId.toString())
         stop.a = coords.x
         stop.o = coords.y
+        showStop(stop)
+        $results.find(".selected").addClass("geocoded")
       i++
 
   displayStops = ->

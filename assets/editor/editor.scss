@@ -4,8 +4,6 @@
   top: 0;
   bottom: 0;
   width: 200px;
-  overflow-y: scroll;
-  overflow-x: hidden;
   padding: 10px;
 
   .coords {
@@ -19,6 +17,17 @@
 
   .search {
     width: 100%;
+  }
+
+  .results {
+    position: absolute;
+    top: 80px;
+    padding: 0 10px 10px 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .item {
@@ -43,7 +52,7 @@
 .map {
   position: absolute;
   border: solid 1px #777;
-  left: 200px;
+  left: 220px;
   top: 0;
   bottom: 0;
   right: 0;
