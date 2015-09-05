@@ -26,14 +26,7 @@ body {
     transition: opacity 0.25s ease-in;
     opacity: 1; }
     .card.no-content.hidden, .card.stop-card.hidden {
-      transition: none;
-      opacity: 0;
-      height: 0;
-      box-shadow: none;
-      padding: 0;
-      margin: 0;
-      border: none;
-      margin: -5px; }
+      display: none; }
   .card.no-content .content-wrap {
     font-size: 22px;
     color: #aaa;

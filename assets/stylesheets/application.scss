@@ -35,14 +35,7 @@ body {
     opacity: 1;
 
     &.hidden {
-      transition: none;
-      opacity: 0;
-      height: 0;
-      box-shadow: none;
-      padding: 0;
-      margin: 0;
-      border: none;
-      margin: -5px;
+      display: none;
     }
   }
 
