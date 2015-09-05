@@ -328,11 +328,10 @@ body {
 
     li {
       display: inline-block;
-      border: solid 1px #ddd;
       text-align: center;
       width: 59px;
       cursor: pointer;
-      margin-right: 4px;
+      margin-right: 3px;
 
       &:last-child {
         margin-right: 0;
@@ -342,6 +341,14 @@ body {
         color: white;
         padding: 1px 3px;
         font-size: 10px;
+        border-style: solid;
+        border-width: 1px 1px 0 1px;
+      }
+
+      .transport-content {
+        border-left: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
       }
 
       .transport-number {
@@ -446,6 +453,7 @@ body {
 .rail {
   .transport-title {
     background-color: #d9534f;
+    border-color: #d43f3a;
   }
 
   .transport-number {
@@ -456,6 +464,7 @@ body {
 .bus {
   .transport-title {
     background-color: #f0ad4e;
+    border-color: #eea236;
   }
 
   .transport-number {
@@ -466,6 +475,7 @@ body {
 .trol {
   .transport-title {
     background-color: #337ab7;
+    border-color: #2e6da4;
   }
 
   .transport-number {

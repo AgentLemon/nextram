@@ -70,13 +70,15 @@
   <div class="transport-title">
     <%= humanType %>
   </div>
-  <div class="transport-number">
-    <%= number %>
+  <div class="transport-content">
+    <div class="transport-number">
+      <%= number %>
+    </div>
+    <div class="transport-estimate">
+      <%= est %><span class="minutes">&nbsp;мин</span>
+    </div>
+    </li>
   </div>
-  <div class="transport-estimate">
-    <%= est %><span class="minutes">&nbsp;мин</span>
-  </div>
-  </li>
 </script>
 <script id="transport-full-card-template" type="html/template">
   <div class="large-transport-card-overlay hidden"></div>

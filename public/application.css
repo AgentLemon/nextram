@@ -231,17 +231,22 @@ body {
     transition: opacity 0.125s ease-in; }
     .short-details ul li {
       display: inline-block;
-      border: solid 1px #ddd;
       text-align: center;
       width: 59px;
       cursor: pointer;
-      margin-right: 4px; }
+      margin-right: 3px; }
       .short-details ul li:last-child {
         margin-right: 0; }
       .short-details ul li .transport-title {
         color: white;
         padding: 1px 3px;
-        font-size: 10px; }
+        font-size: 10px;
+        border-style: solid;
+        border-width: 1px 1px 0 1px; }
+      .short-details ul li .transport-content {
+        border-left: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-bottom: solid 1px #ddd; }
       .short-details ul li .transport-number {
         padding: 6px 0;
         font-size: 30px;
@@ -316,19 +321,22 @@ body {
     padding-right: 10px; }
 
 .rail .transport-title {
-  background-color: #d9534f; }
+  background-color: #d9534f;
+  border-color: #d43f3a; }
 
 .rail .transport-number {
   color: #d9534f; }
 
 .bus .transport-title {
-  background-color: #f0ad4e; }
+  background-color: #f0ad4e;
+  border-color: #eea236; }
 
 .bus .transport-number {
   color: #f0ad4e; }
 
 .trol .transport-title {
-  background-color: #337ab7; }
+  background-color: #337ab7;
+  border-color: #2e6da4; }
 
 .trol .transport-number {
   color: #337ab7; }

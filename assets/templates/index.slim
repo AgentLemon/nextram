@@ -52,11 +52,12 @@ script type="html/template" id="stop-card-template"
 script type="html/template" id="transport-short-card-template"
   | <li class="<%= type %>">
   .transport-title <%= humanType %>
-  .transport-number <%= number %>
-  .transport-estimate
-    | <%= est %>
-    span.minutes &nbsp;мин
-  | </li>
+  .transport-content
+    .transport-number <%= number %>
+    .transport-estimate
+      | <%= est %>
+      span.minutes &nbsp;мин
+    | </li>
 
 script type="html/template" id="transport-full-card-template"
   .large-transport-card-overlay.hidden
