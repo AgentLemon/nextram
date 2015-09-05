@@ -212,10 +212,11 @@ $(function() {
     return $fullCard.on("click", removeFullCard);
   };
   showTransportShort = function() {
-    var $details, $this, $transport, load, stopId;
+    var $details, $reloadButton, $this, $transport, load, reload, stopId;
     $this = $(this);
     $details = $this.next(".short-details");
     $transport = $details.find("ul.transport");
+    $reloadButton = $details.find(".reload-button");
     stopId = $this.closest(".content-wrap").data("id");
     $details.toggleClass("hidden");
     $this.toggleClass("expanded");
@@ -240,18 +241,21 @@ $(function() {
         });
       });
     };
+    reload = function() {
+      $details.addClass("reloading");
+      return load();
+    };
     if ($this.is(".expanded")) {
       $transport.empty();
       $details.addClass("loading");
       $details.removeClass("empty");
       load();
       pushStop(stopId);
-      return timer.push(stopId, function() {
-        $details.addClass("reloading");
-        return load();
-      });
+      timer.push(stopId, load);
+      return $reloadButton.on("click", reload);
     } else {
-      return timer["delete"](stopId);
+      timer["delete"](stopId);
+      return $reloadButton.off("click");
     }
   };
   displayStops = function(stops) {

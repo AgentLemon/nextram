@@ -160,12 +160,16 @@ body {
     opacity: 0; }
   .short-details.loading .overlay.loading {
     display: block; }
+  .short-details.loading .badge {
+    opacity: 0 !important; }
   .short-details.reloading .overlay.reloading {
-    display: block; }
+    opacity: 1; }
+  .short-details.reloading .overlay.reload-button {
+    opacity: 0; }
   .short-details.empty .overlay.empty {
     display: block; }
   .short-details.see-more .overlay.see-more {
-    display: block; }
+    opacity: 1; }
   .short-details .overlay {
     display: none;
     position: absolute;
@@ -178,32 +182,37 @@ body {
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: 15%; }
-    .short-details .overlay.reloading {
-      width: 20px;
-      height: 20px;
-      left: 2px;
-      top: -4px;
-      right: auto;
-      bottom: auto;
-      background-image: url(reloading.gif);
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-      background-size: 100%;
-      background-color: rgba(200, 200, 200, 0.7);
-      border-radius: 10px; }
-    .short-details .overlay.see-more {
+    .short-details .overlay.badge {
+      display: block;
+      opacity: 0;
+      transition: all 0.25s;
       width: 20px;
       height: 20px;
       left: auto;
       top: auto;
-      right: 4px;
-      bottom: 8px;
-      background-image: url(arrow-right.png);
+      bottom: auto;
+      top: auto;
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: 100%;
+      border-radius: 10px; }
+    .short-details .overlay.reloading {
+      left: 2px;
+      top: -4px;
+      background-image: url(reloading.gif);
+      background-color: rgba(200, 200, 200, 0.7); }
+    .short-details .overlay.reload-button {
+      opacity: 1;
+      left: 2px;
+      top: -4px;
+      background-image: url(reload.png);
+      background-color: rgba(51, 122, 183, 0.7);
+      cursor: pointer; }
+    .short-details .overlay.see-more {
+      right: 4px;
+      bottom: 8px;
+      background-image: url(arrow-right.png);
       background-color: rgba(200, 200, 200, 0.7);
-      border-radius: 10px;
       animation: see-more 1s infinite;
       -webkit-animation: see-more 1s infinite; }
     .short-details .overlay.empty {

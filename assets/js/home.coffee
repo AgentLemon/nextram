@@ -94,6 +94,7 @@ $ ->
     $this = $(this)
     $details = $this.next(".short-details")
     $transport = $details.find("ul.transport")
+    $reloadButton = $details.find(".reload-button")
     stopId = $this.closest(".content-wrap").data("id")
 
     $details.toggleClass("hidden")
@@ -115,18 +116,21 @@ $ ->
         )
       )
 
+    reload = ->
+      $details.addClass("reloading")
+      load()
+
     if ($this.is(".expanded"))
       $transport.empty()
       $details.addClass("loading")
       $details.removeClass("empty")
       load()
       pushStop(stopId)
-      timer.push(stopId, ->
-        $details.addClass("reloading")
-        load()
-      )
+      timer.push(stopId, load)
+      $reloadButton.on("click", reload)
     else
       timer.delete(stopId)
+      $reloadButton.off("click")
 
   displayStops = (stops) ->
     $noContent.addClass("hidden")
