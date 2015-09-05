@@ -260,7 +260,6 @@ $(function() {
     return _.each(groupStops(stops), function(stop, index) {
       var $card;
       $card = $(stopCardTemplate(stop));
-      $card.addClass("hidden");
       $card.find(".show-short").on("click", showTransportShort);
       $card.find("ul.transport").on("scroll", function(e) {
         var $this;
@@ -269,9 +268,6 @@ $(function() {
           return $this.closest(".short-details").removeClass("see-more");
         }
       });
-      window.setTimeout((function() {
-        return $card.removeClass("hidden");
-      }), index * 200);
       return $page.append($card);
     });
   };
@@ -341,9 +337,7 @@ $(function() {
     }
   });
   window.onpopstate = function(e) {
-    if (!e.state || !e.state.transport) {
-      return removeFullCard(true);
-    }
+    return removeFullCard(true);
   };
   return FastClick.attach(document.body);
 });

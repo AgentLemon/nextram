@@ -133,14 +133,12 @@ $ ->
     clear()
     _.each(groupStops(stops), (stop, index) ->
       $card = $(stopCardTemplate(stop))
-      $card.addClass("hidden")
       $card.find(".show-short").on("click", showTransportShort)
       $card.find("ul.transport").on("scroll", (e) ->
         $this = $(this)
         if (this.scrollWidth <= $this.scrollLeft() + $this.width())
           $this.closest(".short-details").removeClass("see-more")
       )
-      window.setTimeout((-> $card.removeClass("hidden")), index*200)
       $page.append($card)
     )
 
@@ -200,7 +198,6 @@ $ ->
   )
 
   window.onpopstate = (e) ->
-    if (!e.state || !e.state.transport)
-      removeFullCard(true)
+    removeFullCard(true)
 
   FastClick.attach(document.body)

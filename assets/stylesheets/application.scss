@@ -362,7 +362,7 @@ body {
 }
 
 .large-transport-card {
-  transition: all 0.125s ease-in 0.125s;
+  transition: all 0.125s ease-in-out 0.125s;
   background-color: #fafafa;
   border: solid 1px #444;
   box-shadow: rgba(0,0,0,0.3) 0 0 10px 5px;
@@ -370,14 +370,16 @@ body {
   z-index: 101;
   width: 250px;
   margin-left: -125px;
-  margin-top: -200px;
+  margin-bottom: -200px;
   left: 50%;
-  top: 50%;
+  bottom: 50%;
   cursor: pointer;
 
   &.hidden {
-    transition: opacity 0.125s ease-in;
+    transition: all 0.125s ease-in-out;
     opacity: 0;
+    bottom: 100%;
+    margin-bottom: 0;
   }
 
   .transport-title {
