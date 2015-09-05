@@ -11,12 +11,13 @@ html
   body
     .stops
       .coords
-      br
-      button.apply Apply
-      button.save Save
-      br
-      input.search
-      br
+      .buttons
+        button.apply Apply
+        button.save Save
+        span.count
+        input.hide-located type="checkbox"
+      .search-box
+        input.search
       .results
     .map#map
       .target

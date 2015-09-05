@@ -5,16 +5,17 @@ $( ->
   $coords = $(".coords")
   $apply = $(".apply")
   $save = $(".save")
+  $count = $(".count")
+  $hide = $(".hide-located")
   coords = { x: 0, y: 0 }
   stopId = 0
 
   showStop = (stop) ->
-    obj = new ymaps.GeoObject(
-      geometry:
-        type: "Point",
-        coordinates: [stop.a, stop.o]
-    )
-    map.geoObjects.add(obj)
+    placemark = new ymaps.Placemark([stop.a, stop.o],
+      { balloonContent: "<span class='name'>#{stop.n}</span><br/><span class='desc'>#{stop.d}</span>" },
+      { preset: 'islands#redCircleDotIcon' }
+    );
+    map.geoObjects.add(placemark);
 
   showStops = ->
     i = 0
@@ -37,6 +38,15 @@ $( ->
   save = ->
     console.log(JSON.stringify(stops, null, 2))
 
+  recount = ->
+    located = 0
+    i = 0
+    while i < stops.length
+      if (stops[i].a && stops[i].o)
+        located++
+      i++
+    $count.text("#{located}/#{stops.length}")
+
   apply = ->
     i = 0
     while (i < stops.length)
@@ -47,22 +57,26 @@ $( ->
         showStop(stop)
         $results.find(".selected").addClass("geocoded")
       i++
+    recount()
     focusSearch()
   
   displayStops = ->
     search = $search.val()
     regexp = new RegExp(search.replace(/ /g, ".*"), 'ig')
+    field = if (search.match(/^на /i)) then "d" else "n"
     $results.empty()
     i = 0
     while (i < stops.length)
       stop = stops[i]
-      if (stop.n.match(regexp))
+      if (stop[field].match(regexp))
         $item = $("<div></div>")
         $item.addClass("item")
         $item.text(stop.n)
         $item.data("id", stop.i)
         if (stop.a && stop.o)
           $item.addClass("geocoded")
+          if ($hide.is(":checked"))
+            $item.addClass("hidden")
         $item.on("click", -> selectStop($(this)))
         
         $details = $("<div></div>")
@@ -102,4 +116,6 @@ $( ->
     if (e.charCode == 13)
       apply()
   )
+
+  recount()
 )

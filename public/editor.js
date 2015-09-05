@@ -1,24 +1,25 @@
 $(function() {
-  var $apply, $coords, $results, $save, $search, apply, coords, displayStops, focusSearch, init, save, selectStop, showStop, showStops, stopId;
+  var $apply, $coords, $count, $hide, $results, $save, $search, apply, coords, displayStops, focusSearch, init, recount, save, selectStop, showStop, showStops, stopId;
   $search = $(".search");
   $results = $(".results");
   $coords = $(".coords");
   $apply = $(".apply");
   $save = $(".save");
+  $count = $(".count");
+  $hide = $(".hide-located");
   coords = {
     x: 0,
     y: 0
   };
   stopId = 0;
   showStop = function(stop) {
-    var obj;
-    obj = new ymaps.GeoObject({
-      geometry: {
-        type: "Point",
-        coordinates: [stop.a, stop.o]
-      }
+    var placemark;
+    placemark = new ymaps.Placemark([stop.a, stop.o], {
+      balloonContent: "<span class='name'>" + stop.n + "</span><br/><span class='desc'>" + stop.d + "</span>"
+    }, {
+      preset: 'islands#redCircleDotIcon'
     });
-    return map.geoObjects.add(obj);
+    return map.geoObjects.add(placemark);
   };
   showStops = function() {
     var i, results, stop;
@@ -46,6 +47,18 @@ $(function() {
   save = function() {
     return console.log(JSON.stringify(stops, null, 2));
   };
+  recount = function() {
+    var i, located;
+    located = 0;
+    i = 0;
+    while (i < stops.length) {
+      if (stops[i].a && stops[i].o) {
+        located++;
+      }
+      i++;
+    }
+    return $count.text(located + "/" + stops.length);
+  };
   apply = function() {
     var i, stop;
     i = 0;
@@ -59,24 +72,29 @@ $(function() {
       }
       i++;
     }
+    recount();
     return focusSearch();
   };
   displayStops = function() {
-    var $details, $item, i, regexp, results, search, stop;
+    var $details, $item, field, i, regexp, results, search, stop;
     search = $search.val();
     regexp = new RegExp(search.replace(/ /g, ".*"), 'ig');
+    field = search.match(/^на /i) ? "d" : "n";
     $results.empty();
     i = 0;
     results = [];
     while (i < stops.length) {
       stop = stops[i];
-      if (stop.n.match(regexp)) {
+      if (stop[field].match(regexp)) {
         $item = $("<div></div>");
         $item.addClass("item");
         $item.text(stop.n);
         $item.data("id", stop.i);
         if (stop.a && stop.o) {
           $item.addClass("geocoded");
+          if ($hide.is(":checked")) {
+            $item.addClass("hidden");
+          }
         }
         $item.on("click", function() {
           return selectStop($(this));
@@ -117,9 +135,10 @@ $(function() {
   });
   $apply.on("click", apply);
   $save.on("click", save);
-  return $(document).on("keypress", function(e) {
+  $(document).on("keypress", function(e) {
     if (e.charCode === 13) {
       return apply();
     }
   });
+  return recount();
 });

@@ -8,6 +8,10 @@
   .stops .coords {
     text-align: center;
     font-size: 12px; }
+  .stops .count {
+    font-size: 12px;
+    margin-left: 5px;
+    margin-right: 5px; }
   .stops .search {
     width: 100%; }
   .stops .results {
@@ -27,6 +31,8 @@
       background-color: #aaf; }
     .stops .item.geocoded {
       opacity: 0.3; }
+    .stops .item.hidden {
+      display: none; }
     .stops .item .details {
       color: #777; }
 
@@ -46,3 +52,10 @@
     left: 50%;
     top: 50%;
     z-index: 100; }
+
+.name {
+  font-size: 12px; }
+
+.desc {
+  font-size: 12px;
+  color: #777; }
