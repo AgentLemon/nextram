@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2015-08-18:v2
+# 2015-09-05:v1
 
 CACHE:
 index.html
@@ -9,6 +9,7 @@ application.js
 stops.js
 angle-down.png
 angle-up.png
+arrow-right.png
 loading.gif
 reloading.gif
 http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic

@@ -98,7 +98,7 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, findStops, gateway, getDistance, groupStops, loadStops, normalizeStops, pos, pushStop, removeFullCard, setGeoState, setLoading, showGeo, showTransportFull, showTransportShort, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
+  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, findStops, gateway, getDistance, groupStops, loadStops, normalizeStops, pos, pushStop, removeFullCard, setGeoState, showGeo, showTransportFull, showTransportShort, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
   stopCardTemplate = _.template($("#stop-card-template").html());
   transportShortCardTemplate = _.template($("#transport-short-card-template").html());
   transportFullCardTemplate = _.template($("#transport-full-card-template").html());
@@ -119,9 +119,6 @@ $(function() {
   timer = new Timer(30000);
   showGeo = $.parseJSON($.cookie("showGeo") || false);
   pos = null;
-  setLoading = function() {
-    return $results.empty().append($('<div class="item empty"></div>').text("Загружаю..."));
-  };
   pushStop = function(id) {
     var lastStops, stopsCookie;
     stopsCookie = $.cookie("lastStops");
@@ -230,6 +227,9 @@ $(function() {
         if (transports.length === 0) {
           $details.addClass("empty");
         }
+        if (transports.length > 4) {
+          $details.addClass("see-more");
+        }
         return _.each(transports, function(item) {
           var $card;
           $card = $(transportShortCardTemplate(item));
@@ -262,6 +262,13 @@ $(function() {
       $card = $(stopCardTemplate(stop));
       $card.addClass("hidden");
       $card.find(".show-short").on("click", showTransportShort);
+      $card.find("ul.transport").on("scroll", function(e) {
+        var $this;
+        $this = $(this);
+        if (this.scrollWidth <= $this.scrollLeft() + $this.width()) {
+          return $this.closest(".short-details").removeClass("see-more");
+        }
+      });
       window.setTimeout((function() {
         return $card.removeClass("hidden");
       }), index * 200);
@@ -316,10 +323,6 @@ $(function() {
     });
   }
   $search.on("input paste focus", _.debounce(loadStops, 250));
-  $(".reload").on("click", function() {
-    setLoading();
-    return reload();
-  });
   $geolocator.on("click", function() {
     if (pos) {
       showGeo = !showGeo;

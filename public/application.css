@@ -164,6 +164,8 @@ body {
     display: block; }
   .short-details.empty .overlay.empty {
     display: block; }
+  .short-details.see-more .overlay.see-more {
+    display: block; }
   .short-details .overlay {
     display: none;
     position: absolute;
@@ -189,6 +191,21 @@ body {
       background-size: 100%;
       background-color: rgba(200, 200, 200, 0.7);
       border-radius: 10px; }
+    .short-details .overlay.see-more {
+      width: 20px;
+      height: 20px;
+      left: auto;
+      top: auto;
+      right: 4px;
+      bottom: 8px;
+      background-image: url(arrow-right.png);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: 100%;
+      background-color: rgba(200, 200, 200, 0.7);
+      border-radius: 10px;
+      animation: see-more 1s infinite;
+      -webkit-animation: see-more 1s infinite; }
     .short-details .overlay.empty {
       color: #aaa;
       font-size: 30px;
@@ -336,3 +353,15 @@ body {
     background-color: #31b0d5; }
   .cyan.button.disabled:hover {
     background-color: #46b8da; }
+
+@keyframes see-more {
+  0%, 100% {
+    right: 0px; }
+  50% {
+    right: 8px; } }
+
+@-webkit-keyframes see-more {
+  0%, 100% {
+    right: 0px; }
+  50% {
+    right: 8px; } }

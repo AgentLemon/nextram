@@ -24,9 +24,6 @@ $ ->
   showGeo = $.parseJSON($.cookie("showGeo") || false);
   pos = null
 
-  setLoading = ->
-    $results.empty().append($('<div class="item empty"></div>').text("Загружаю..."))
-
   pushStop = (id) ->
     stopsCookie = $.cookie("lastStops")
     lastStops = stopsCookie && $.parseJSON(stopsCookie) || []
@@ -109,6 +106,8 @@ $ ->
         $details.removeClass("reloading")
         if (transports.length == 0)
           $details.addClass("empty")
+        if (transports.length > 4)
+          $details.addClass("see-more")
         _.each(transports, (item) -> 
           $card = $(transportShortCardTemplate(item))
           $transport.append($card)
@@ -136,6 +135,11 @@ $ ->
       $card = $(stopCardTemplate(stop))
       $card.addClass("hidden")
       $card.find(".show-short").on("click", showTransportShort)
+      $card.find("ul.transport").on("scroll", (e) ->
+        $this = $(this)
+        if (this.scrollWidth <= $this.scrollLeft() + $this.width())
+          $this.closest(".short-details").removeClass("see-more")
+      )
       window.setTimeout((-> $card.removeClass("hidden")), index*200)
       $page.append($card)
     )
@@ -178,10 +182,6 @@ $ ->
     )
 
   $search.on("input paste focus", _.debounce(loadStops, 250))
-  $(".reload").on("click", ->
-    setLoading()
-    reload()
-  )
 
   $geolocator.on("click", ->
     if pos
