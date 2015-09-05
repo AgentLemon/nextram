@@ -4,7 +4,7 @@ html
     
     link href="tram-144.png" rel="apple-touch-icon" sizes="144x144"
     link href="tram-114.png" rel="apple-touch-icon" sizes="114x114"
-    link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'
+    link href='https://fonts.googleapis.com/css?family=Roboto+Condensed&subset=latin,cyrillic' rel='stylesheet' type='text/css'
     link href="application.css" type="text/css" rel="stylesheet"
     
     script src="vendor.js" type="text/javascript"
@@ -53,7 +53,9 @@ script type="html/template" id="transport-short-card-template"
   | <li class="<%= type %>">
   .transport-title <%= humanType %>
   .transport-number <%= number %>
-  .transport-estimate <%= est %> мин
+  .transport-estimate
+    | <%= est %>
+    span.minutes &nbsp;мин
   | </li>
 
 script type="html/template" id="transport-full-card-template"

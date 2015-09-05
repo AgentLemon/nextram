@@ -13,7 +13,7 @@ html {
 body {
   padding: 0;
   margin: 0;
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .page-wrap {
@@ -318,7 +318,7 @@ body {
 
   ul {
     list-style: none;
-    padding: 0;
+    padding: 0 0 2px 0;
     margin: 0;
     white-space: nowrap;
     overflow-x: auto;
@@ -345,7 +345,7 @@ body {
       }
 
       .transport-number {
-        padding: 5px 0;
+        padding: 6px 0;
         font-size: 30px;
         font-weight: bold;
       }
@@ -355,6 +355,11 @@ body {
         font-weight: bold;
         margin: 0 5px;
         border-top: solid 1px #ddd;
+        padding: 3px 0;
+
+        .minutes {
+          font-size: 10px;
+        }
       }
     }
   }
@@ -440,31 +445,31 @@ body {
 
 .rail {
   .transport-title {
-    background-color: #c9302c;
+    background-color: #d9534f;
   }
 
   .transport-number {
-    color: #c9302c;
+    color: #d9534f;
   }
 }
 
 .bus {
   .transport-title {
-    background-color: #eea236;
+    background-color: #f0ad4e;
   }
 
   .transport-number {
-    color: #eea236;
+    color: #f0ad4e;
   }
 }
 
 .trol {
   .transport-title {
-    background-color: #2e6da4;
+    background-color: #337ab7;
   }
 
   .transport-number {
-    color: #2e6da4;
+    color: #337ab7;
   }
 }
 
