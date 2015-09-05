@@ -190,10 +190,12 @@ $(function() {
     });
     return result;
   };
-  removeFullCard = function() {
+  removeFullCard = function(ignoreHistory) {
     if ($fullCard) {
       $fullCard.addClass("hidden");
-      window.location.hash = "!/";
+      if (!ignoreHistory) {
+        history.pushState(null, document.title, "");
+      }
       return setTimeout((function() {
         $fullCard.remove();
         return $html.removeClass("overlayed");
@@ -204,7 +206,9 @@ $(function() {
     $fullCard = $(transportFullCardTemplate(transport));
     $fullCard.appendTo($body);
     $html.addClass("overlayed");
-    window.location.hash = "!/full-card";
+    history.pushState({
+      transport: transport
+    }, document.title, "");
     setTimeout((function() {
       return $fullCard.removeClass("hidden");
     }), 0);
@@ -331,11 +335,11 @@ $(function() {
       }
     }
   });
-  $(window).bind("hashchange", function() {
-    if (window.location.hash === "" || window.location.hash === "#!/") {
-      return removeFullCard();
+  window.onpopstate = function(e) {
+    if (!e.state || !e.state.transport) {
+      return removeFullCard(true);
     }
-  });
+  };
   return FastClick.attach(document.body);
 });
 

@@ -75,10 +75,11 @@ $ ->
     )
     result
 
-  removeFullCard = ->
+  removeFullCard = (ignoreHistory) ->
     if ($fullCard)
       $fullCard.addClass("hidden")
-      window.location.hash = "!/"
+      if (!ignoreHistory)
+        history.pushState(null, document.title, "")
       setTimeout((->
         $fullCard.remove()
         $html.removeClass("overlayed")
@@ -88,7 +89,7 @@ $ ->
     $fullCard = $(transportFullCardTemplate(transport))
     $fullCard.appendTo($body)
     $html.addClass("overlayed")
-    window.location.hash = "!/full-card"
+    history.pushState({ transport: transport }, document.title, "")
     setTimeout((-> $fullCard.removeClass("hidden")), 0)
     $fullCard.on("click", removeFullCard)
 
@@ -196,9 +197,8 @@ $ ->
         $search.focus()
   )
 
-  $(window).bind("hashchange", ->
-    if (window.location.hash == "" || window.location.hash == "#!/")
-      removeFullCard()
-  )
+  window.onpopstate = (e) ->
+    if (!e.state || !e.state.transport)
+      removeFullCard(true)
 
   FastClick.attach(document.body)
