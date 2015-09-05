@@ -308,7 +308,8 @@ $(function() {
       return findStops("");
     } else {
       showGeo = false;
-      return $search.focus();
+      $search.focus();
+      return loadStops();
     }
   };
   if (navigator && navigator.geolocation) {
@@ -322,7 +323,7 @@ $(function() {
       return setGeoState();
     });
   }
-  $search.on("input paste focus", _.debounce(loadStops, 250));
+  $search.on("input paste", _.debounce(loadStops, 250));
   $geolocator.on("click", function() {
     if (pos) {
       showGeo = !showGeo;
@@ -334,7 +335,8 @@ $(function() {
       } else {
         $searchCard.removeClass("geolocated");
         $search.removeAttr("disabled");
-        return $search.focus();
+        $search.focus();
+        return loadStops();
       }
     }
   });

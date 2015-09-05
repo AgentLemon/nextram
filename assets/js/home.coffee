@@ -172,6 +172,7 @@ $ ->
     else
       showGeo = false
       $search.focus()
+      loadStops()
 
   if navigator && navigator.geolocation
     $geolocator.addClass("disabled")
@@ -181,7 +182,7 @@ $ ->
       setGeoState()
     )
 
-  $search.on("input paste focus", _.debounce(loadStops, 250))
+  $search.on("input paste", _.debounce(loadStops, 250))
 
   $geolocator.on("click", ->
     if pos
@@ -195,6 +196,7 @@ $ ->
         $searchCard.removeClass("geolocated")
         $search.removeAttr("disabled")
         $search.focus()
+        loadStops()
   )
 
   window.onpopstate = (e) ->
