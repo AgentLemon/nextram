@@ -470,52 +470,66 @@ body {
 
 .green {
   background-color: #5cb85c;
-
+  border-color: #4cae4c;
   &.button:hover {
-    background-color: #4cae4c;
+    background-color: #449d44;
+    border-color: #398439;
   }
   &.button.disabled:hover {
     background-color: #5cb85c;
+    border-color: #4cae4c;
   }
 }
 
 .yellow {
-  background-color: #eea236;
+  background-color: #f0ad4e;
+  border-color: #eea236;
   &.button:hover {
     background-color: #ec971f;
+    border-color: #d58512;
   }
   &.button.disabled:hover {
-    background-color: #eea236;
+    background-color: #f0ad4e;
+    border-color: #eea236;
   }
 }
 
 .red {
-  background-color: #c9302c;
+  background-color: #d9534f;
+  border-color: #d43f3a;
   &.button:hover {
-    background-color: #ac2925;
+    background-color: #c9302c;
+    border-color: #ac2925;
   }
   &.button.disabled:hover {
-    background-color: #c9302c;
+    background-color: #d9534f;
+    border-color: #d43f3a;
   }
 }
 
 .blue {
-  background-color: #2e6da4;
+  background-color: #337ab7;
+  border-color: #2e6da4;
   &.button:hover {
     background-color: #286090;
+    border-color: #204d74;
   }
   &.button.disabled:hover {
-    background-color: #2e6da4;
+    background-color: #337ab7;
+    border-color: #2e6da4;
   }
 }
 
 .cyan {
-  background-color: #46b8da;
+  background-color: #5bc0de;
+  border-color: #46b8da;
   &.button:hover {
     background-color: #31b0d5;
+    border-color: #269abc;
   }
   &.button.disabled:hover {
-    background-color: #46b8da;
+    background-color: #5bc0de;
+    border-color: #46b8da;
   }
 }
 
