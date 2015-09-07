@@ -98,7 +98,7 @@ window.Gateway = function() {
 };
 
 $(function() {
-  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, findStops, gateway, getDistance, groupStops, loadStops, normalizeStops, pos, pushStop, removeFullCard, setGeoState, showGeo, showTransportFull, showTransportShort, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
+  var $body, $currentStop, $fullCard, $geolocator, $geowrap, $html, $noContent, $page, $results, $search, $searchCard, $transportTop, clear, displayLastStops, displayStops, findStops, gateway, geolocate, getDistance, groupStops, loadStops, normalizeStops, pos, pushStop, removeFullCard, setGeoState, showGeo, showTransportFull, showTransportShort, stopCardTemplate, stopsCount, timer, transportFullCardTemplate, transportShortCardTemplate;
   stopCardTemplate = _.template($("#stop-card-template").html());
   transportShortCardTemplate = _.template($("#transport-short-card-template").html());
   transportFullCardTemplate = _.template($("#transport-full-card-template").html());
@@ -117,7 +117,7 @@ $(function() {
   $currentStop = $(".current-stop");
   gateway = new Gateway();
   timer = new Timer(30000);
-  showGeo = $.parseJSON($.cookie("showGeo") || false);
+  showGeo = $.cookie("showGeo") || false;
   pos = null;
   pushStop = function(id) {
     var lastStops, stopsCookie;
@@ -312,14 +312,17 @@ $(function() {
       return loadStops();
     }
   };
+  geolocate = function(p) {
+    pos = {
+      lat: p.coords.latitude,
+      lon: p.coords.longitude
+    };
+    return $geolocator.removeClass("disabled");
+  };
   if (navigator && navigator.geolocation) {
     $geolocator.addClass("disabled");
     navigator.geolocation.getCurrentPosition(function(p) {
-      pos = {
-        lat: p.coords.latitude,
-        lon: p.coords.longitude
-      };
-      $geolocator.removeClass("disabled");
+      geolocate(p);
       return setGeoState();
     });
   }
@@ -327,11 +330,14 @@ $(function() {
   $geolocator.on("click", function() {
     if (pos) {
       showGeo = !showGeo;
-      $.cookie("showGeo", showGeo);
+      $.cookie("showGeo", showGeo.toString());
       if (showGeo) {
-        $searchCard.addClass("geolocated");
-        $search.attr("disabled", "disabled");
-        return findStops("");
+        return navigator.geolocation.getCurrentPosition(function(p) {
+          geolocate(p);
+          $searchCard.addClass("geolocated");
+          $search.attr("disabled", "disabled");
+          return findStops("");
+        });
       } else {
         $searchCard.removeClass("geolocated");
         $search.removeAttr("disabled");

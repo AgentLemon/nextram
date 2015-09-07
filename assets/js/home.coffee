@@ -19,9 +19,9 @@ $ ->
   $transportTop = $(".transport-top")
   $currentStop = $(".current-stop")
 
-  gateway = new Gateway();
-  timer = new Timer(30000);
-  showGeo = $.parseJSON($.cookie("showGeo") || false);
+  gateway = new Gateway()
+  timer = new Timer(30000)
+  showGeo = $.cookie("showGeo") || false
   pos = null
 
   pushStop = (id) ->
@@ -176,11 +176,14 @@ $ ->
       $search.focus()
       loadStops()
 
+  geolocate = (p) ->
+    pos = { lat: p.coords.latitude, lon: p.coords.longitude }
+    $geolocator.removeClass("disabled")
+
   if navigator && navigator.geolocation
     $geolocator.addClass("disabled")
     navigator.geolocation.getCurrentPosition((p) ->
-      pos = { lat: p.coords.latitude, lon: p.coords.longitude }
-      $geolocator.removeClass("disabled")
+      geolocate(p)
       setGeoState()
     )
 
@@ -189,11 +192,14 @@ $ ->
   $geolocator.on("click", ->
     if pos
       showGeo = !showGeo
-      $.cookie("showGeo", showGeo)
+      $.cookie("showGeo", showGeo.toString())
       if showGeo
-        $searchCard.addClass("geolocated")
-        $search.attr("disabled", "disabled")
-        findStops("")
+        navigator.geolocation.getCurrentPosition((p) -> 
+          geolocate(p)
+          $searchCard.addClass("geolocated")
+          $search.attr("disabled", "disabled")
+          findStops("")
+        )
       else
         $searchCard.removeClass("geolocated")
         $search.removeAttr("disabled")
